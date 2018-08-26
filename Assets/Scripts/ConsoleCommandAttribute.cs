@@ -12,6 +12,6 @@ public sealed class ConsoleCommandAttribute : System.Attribute
 
 	public ConsoleCommandAttribute (string commandName)
 	{
-
+		CommandName = commandName;
 	}
 }
