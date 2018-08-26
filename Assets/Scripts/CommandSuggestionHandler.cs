@@ -8,13 +8,25 @@ namespace UnityDeveloperConsole
 		static List<string> InputHistory = new List<string>();
 
 		public static int InputHistorySize { get; set; }
-				
+
+		public static void RegisterCommands (Command[] command)
+		{
+			for (int i = 0; i < command.Length; i++)
+				if(command[i].Indexed)
+					commands.Add(command[i]);
+
+			commands.Sort();
+		}
+
 		public static void RegisterCommand (Command command)
 		{
+			if (!command.Indexed)
+				return;
+
 			commands.Add(command);
 			commands.Sort();
 		}
-		
+
 		public static void RegisterInputToHistory (string input)
 		{
 			if (InputHistory.Count >= InputHistorySize)
@@ -25,7 +37,7 @@ namespace UnityDeveloperConsole
 
 		public static string[] GetSuggestions (string input, int maxResults = 5)
 		{
-			string[] results = new string[maxResults];
+			List<string> results = new List<string>(maxResults);
 
 			int resultCount = 0;
 
@@ -33,15 +45,16 @@ namespace UnityDeveloperConsole
 			{
 				Command command = commands[i];
 
-				if(command.Name.ToUpperInvariant().StartsWith(input.ToUpperInvariant()))
+				if (command.Name.ToUpperInvariant().StartsWith(input.ToUpperInvariant()))
 					results[resultCount] = command.FullName;
 			}
-			return results;
+
+			return results.ToArray();
 		}
 
 		public static string[] GetLatestInputs ()
 		{
 			return InputHistory.ToArray();
-		}		
+		}
 	}
 }

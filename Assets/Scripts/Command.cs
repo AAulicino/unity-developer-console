@@ -33,7 +33,7 @@ namespace UnityDeveloperConsole
 			Parameters = method.GetParameters();
 			Indexed = indexed;
 			DeveloperOnly = developerOnly;
-			FullName = commandName + string.Join("", Parameters.Select(x => x.Name).ToArray());
+			FullName = commandName + " " + string.Join(" ", Parameters.Select(x => x.Name).ToArray());
 		}
 
 		public int CompareTo (Command other)
