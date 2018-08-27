@@ -11,27 +11,32 @@ public static class DeveloperConsole
 		//For it not to slow down the project's initialiation in case of huge amounts of commands
 		ThreadPool.QueueUserWorkItem((x) =>
 		{
-			Command[] commands = ConsoleCommandsHandler.LoadCompileTimeCommands();
+			Command[] commands = CommandsHandler.LoadCompileTimeCommands();
 			CommandSuggestionsHandler.RegisterCommands(commands);
 		});
 	}
 
 	public static void RegisterRuntimeCommand (string commandName, string methodName, object context, bool developerOnly, bool indexed)
 	{
-		ConsoleCommandsHandler.RegisterRuntimeCommand(commandName, methodName, context, developerOnly, indexed);
+		CommandsHandler.RegisterRuntimeCommand(commandName, methodName, context, developerOnly, indexed);
 	}
 
 	public static void UnregisterRuntimeCommand (string commandName)
 	{
-		ConsoleCommandsHandler.UnregisterRuntimeCommand(commandName);
+		CommandsHandler.UnregisterRuntimeCommand(commandName);
 	}
 
 	public static object ExecuteCommand (string commandName, string[] args)
 	{
-		return ConsoleCommandsHandler.ExecuteCommand(commandName, args);
+		return CommandsHandler.ExecuteCommand(commandName, args);
 	}
 
-	internal static void Log (object message)
+	[ConsoleCommand("test1")]
+	[ConsoleCommand("test2")]
+	[ConsoleCommand("test3")]
+	[ConsoleCommand("test4")]
+	[ConsoleCommand("test5")]
+	public static void Log (object message)
 	{
 		ConsoleUI.Instance.Log(message);
 	}

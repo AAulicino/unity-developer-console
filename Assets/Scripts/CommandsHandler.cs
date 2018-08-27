@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace UnityDeveloperConsole
 {
-	public static class ConsoleCommandsHandler
+	public static class CommandsHandler
 	{
 		readonly static Dictionary<string, Command> consoleCommandsDictionary = new Dictionary<string, Command>();
 
@@ -47,6 +48,24 @@ namespace UnityDeveloperConsole
 			consoleCommandsDictionary.Remove(commandName);
 		}
 
+		public static object ExecuteCommand (string unparsedCommand)
+		{
+			if (string.IsNullOrEmpty(unparsedCommand))
+				return null;
+
+			//Splits by white spaces and preserve things between quotes. Example: Input=MyCommand arg1 "arg 2",
+			//becomes string[] {"MyCommand", "arg1", "arg 2"}.
+			string[] tokens = Regex.Matches(unparsedCommand, @"[\""].+?[\""]|[^ ]+")
+			  .Cast<Match>()
+			  .Select(m => m.Value.Trim('"'))
+			  .ToArray();
+
+			string commandName = tokens.First();
+			string[] args = tokens.Skip(1).ToArray();
+
+			return ExecuteCommand(commandName, args);
+		}
+
 		public static object ExecuteCommand (string commandName, string[] args)
 		{
 			Command command;
@@ -67,14 +86,9 @@ namespace UnityDeveloperConsole
 						}
 						catch (Exception ex)
 						{
-							if (ConsoleUI.Instance != null)
-							{
-								ConsoleUI.Instance.Log(string.Format("[DeveloperConsole] Failed to parse argument {0} of type: {1}. Expected: {2}",
-									args[i], args[i].GetType(), command.Parameters[i].ParameterType));
-							}
-
 							Debug.LogException(ex);
-							return null;
+							return string.Format("[DeveloperConsole] Failed to parse argument {0} of type: {1}. Expected: {2}",
+									args[i], args[i].GetType(), command.Parameters[i].ParameterType);
 						}
 
 						invokeParams.Add(parsedObject);
@@ -83,7 +97,15 @@ namespace UnityDeveloperConsole
 						invokeParams.Add(Type.Missing);
 				}
 
-				return command.Method.Invoke(command.Context, invokeParams.ToArray());
+				try
+				{
+					return command.Method.Invoke(command.Context, invokeParams.ToArray());
+				}
+				catch (Exception ex)
+				{
+					Debug.LogException(ex);
+					return "[DeveloperConsole] Exception occurred during execution of command. Ex: " + ex;
+				}
 			}
 
 			return "Unknown command. " + commandName;

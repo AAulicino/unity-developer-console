@@ -4,10 +4,12 @@ namespace UnityDeveloperConsole
 {
 	public static class CommandSuggestionsHandler
 	{
-		static List<Command> commands = new List<Command>();
-		static List<string> InputHistory = new List<string>();
+		public static int InputHistorySize = 10;
 
-		public static int InputHistorySize { get; set; }
+		static List<Command> commands = new List<Command>();
+		static Queue<string> InputHistory = new Queue<string>();
+
+		static List<string> resultsBuffer = new List<string>(5);
 
 		public static void RegisterCommands (Command[] command)
 		{
@@ -30,29 +32,28 @@ namespace UnityDeveloperConsole
 		public static void RegisterInputToHistory (string input)
 		{
 			if (InputHistory.Count >= InputHistorySize)
-				InputHistory.RemoveAt(0);
+				InputHistory.Dequeue();
 
-			InputHistory.Add(input);
+			InputHistory.Enqueue(input);
 		}
 
 		public static string[] GetSuggestions (string input, int maxResults = 5)
 		{
-			List<string> results = new List<string>(maxResults);
-
+			resultsBuffer.Clear();
 			int resultCount = 0;
 
-			for (int i = 0; i < commands.Count; i++)
+			for (int i = 0, iMax = commands.Count; i < iMax; i++)
 			{
 				Command command = commands[i];
 
 				if (command.Name.ToUpperInvariant().StartsWith(input.ToUpperInvariant()))
-					results[resultCount] = command.FullName;
+					resultsBuffer[resultCount] = command.FullName;
 			}
 
-			return results.ToArray();
+			return resultsBuffer.ToArray();
 		}
 
-		public static string[] GetLatestInputs ()
+		public static string[] GetInputHistory ()
 		{
 			return InputHistory.ToArray();
 		}
