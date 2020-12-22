@@ -20,25 +20,13 @@ namespace UnityDevConsole.Models.Command
             this.typeParser = typeParser;
         }
 
-        public object ExecuteCommand (string unparsedCommand)
+        public object ExecuteCommand (string commandText)
         {
-            if (string.IsNullOrEmpty(unparsedCommand))
+            if (string.IsNullOrEmpty(commandText))
                 return null;
 
-            /*
-                Splits by white spaces and preserve things between quotes.
-                Example:
-                    Input=MyCommand arg1 "arg 2", becomes string[] {"MyCommand", "arg1", "arg 2"}.
-            */
-            string[] tokens = Regex.Matches(unparsedCommand, @"[\""].+?[\""]|[^ ]+")
-              .Cast<Match>()
-              .Select(m => m.Value.Trim('"'))
-              .ToArray();
-
-            string commandName = tokens.First();
-            string[] args = tokens.Skip(1).ToArray();
-
-            return ExecuteCommand(commandName, args);
+            (string command, string[] args) = ParseCommand(commandText);
+            return ExecuteCommand(command, args);
         }
 
         public object ExecuteCommand (string commandName, string[] args)
@@ -48,7 +36,7 @@ namespace UnityDevConsole.Models.Command
 
             try
             {
-                return command.Method.Invoke(command.Context, GetInvokeParams(command, args));
+                return command.Invoke(ParseArgs(command, args));
             }
             catch (Exception ex)
             {
@@ -57,21 +45,21 @@ namespace UnityDevConsole.Models.Command
             }
         }
 
-        object[] GetInvokeParams (Command command, string[] args)
+        object[] ParseArgs (Command command, string[] args)
         {
-            object[] invokeParams = new object[command.Parameters.Length];
+            object[] parsedArgs = new object[command.Parameters.Length];
 
             for (int i = 0; i < command.Parameters.Length; i++)
             {
                 if (i >= args.Length)
                 {
-                    invokeParams[i] = Type.Missing;
+                    parsedArgs[i] = Type.Missing;
                     continue;
                 }
 
                 try
                 {
-                    invokeParams[i] = typeParser.Parse(args[i], command.Parameters[i].ParameterType);
+                    parsedArgs[i] = typeParser.Parse(args[i], command.Parameters[i].ParameterType);
                 }
                 catch (FormatException inner)
                 {
@@ -85,7 +73,22 @@ namespace UnityDevConsole.Models.Command
 
             }
 
-            return invokeParams;
+            return parsedArgs;
+        }
+
+        (string command, string[] args) ParseCommand (string input)
+        {
+            /*
+                Splits by white spaces and preserve things between quotes.
+                Example:
+                    Input=MyCommand arg1 "arg 2", becomes string[] {"MyCommand", "arg1", "arg 2"}.
+            */
+            string[] tokens = Regex.Matches(input, @"[\""].+?[\""]|[^ ]+")
+              .Cast<Match>()
+              .Select(m => m.Value.Trim('"'))
+              .ToArray();
+
+            return (tokens.First(), tokens.Skip(1).ToArray());
         }
     }
 }

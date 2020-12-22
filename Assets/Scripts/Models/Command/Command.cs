@@ -6,16 +6,17 @@ namespace UnityDevConsole.Models.Command
 {
     public class Command : ICommand
     {
+        readonly MethodInfo method;
+        readonly object context;
+
         public string Name { get; }
         public string FullName { get; }
-        public MethodInfo Method { get; }
         public ParameterInfo[] Parameters { get; }
-        public object Context { get; }
         public bool Hidden { get; }
         public bool DeveloperOnly { get; }
 
-        public Command (ConsoleCommandAttribute attribute, MethodInfo method) :
-            this(attribute.CommandName, method, attribute.DeveloperOnly, attribute.Hidden)
+        public Command (ConsoleCommandAttribute attribute, MethodInfo method)
+            : this(attribute.CommandName, method, attribute.DeveloperOnly, attribute.Hidden)
         {
 
         }
@@ -29,13 +30,13 @@ namespace UnityDevConsole.Models.Command
         )
             : this(commandName, method, developerOnly, hidden)
         {
-            Context = context;
+            this.context = context;
         }
 
         Command (string commandName, MethodInfo method, bool developerOnly, bool hidden)
         {
             Name = commandName;
-            Method = method;
+            this.method = method;
             Parameters = method.GetParameters();
             Hidden = hidden;
             DeveloperOnly = developerOnly;
@@ -43,5 +44,7 @@ namespace UnityDevConsole.Models.Command
         }
 
         public int CompareTo (Command other) => Name.CompareTo(other);
+
+        public object Invoke (object[] parameters) => method.Invoke(context, parameters);
     }
 }

@@ -7,10 +7,10 @@ namespace UnityDevConsole.Models.Command
     {
         string Name { get; }
         string FullName { get; }
-        MethodInfo Method { get; }
         ParameterInfo[] Parameters { get; }
-        object Context { get; }
         bool Hidden { get; }
         bool DeveloperOnly { get; }
+
+        object Invoke (object[] parameters);
     }
 }
