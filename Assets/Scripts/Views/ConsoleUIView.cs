@@ -1,14 +1,15 @@
-﻿using UnityEngine;
+﻿using UnityDevConsole.Views.Hint;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace UnityDevConsole.Views
 {
     public class ConsoleUIView : MonoBehaviour, IConsoleUIView
     {
-        // [SerializeField] HintBoxUI hintBox;
-        [SerializeField] InputField body;
-        [SerializeField] InputField inputField;
         [SerializeField] GameObject uiContainer;
+        [SerializeField] InputField bodyText;
+        [SerializeField] InputField inputField;
+        [SerializeField] HintUIView hintUI;
 
         public bool Enabled
         {
@@ -24,8 +25,8 @@ namespace UnityDevConsole.Views
             }
         }
 
-        // public HintBoxUI HintBox => hintBox;
-        public InputField Body => body;
+        public InputField BodyText => bodyText;
         public InputField InputField => inputField;
+        public HintUIView HintUI => hintUI;
     }
 }

@@ -40,7 +40,7 @@ namespace UnityDevConsole.Models.Command
             Parameters = method.GetParameters();
             Hidden = hidden;
             DeveloperOnly = developerOnly;
-            FullName = $"commandName {string.Join(" ", Parameters.Select(x => x.Name).ToArray())}";
+            FullName = $"{commandName} {string.Join(" ", Parameters.Select(x => x.Name).ToArray())}";
         }
 
         public int CompareTo (Command other) => Name.CompareTo(other);

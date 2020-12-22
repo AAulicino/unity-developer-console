@@ -9,9 +9,9 @@ namespace UnityDevConsole.Models.Command
     {
         const BindingFlags flags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
 
-        public Dictionary<string, Command> CreateFromAssemblies (params string[] assemblies)
+        public Dictionary<string, ICommand> CreateFromAssemblies (params string[] assemblies)
         {
-            Dictionary<string, Command> commands = new Dictionary<string, Command>();
+            Dictionary<string, ICommand> commands = new Dictionary<string, ICommand>();
 
             IEnumerable<MethodInfo> methods = assemblies.AsParallel()
                 .Select(Assembly.Load)
@@ -43,7 +43,7 @@ namespace UnityDevConsole.Models.Command
             return commands;
         }
 
-        public Command Create (
+        public ICommand Create (
             string commandName,
             string methodName,
             object context,

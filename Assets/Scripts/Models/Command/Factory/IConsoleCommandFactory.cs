@@ -1,11 +1,10 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace UnityDevConsole.Models.Command
 {
     public interface IConsoleCommandFactory
     {
-        Command Create (
+        ICommand Create (
             string commandName,
             string methodName,
             object context,
@@ -13,6 +12,6 @@ namespace UnityDevConsole.Models.Command
             bool hidden
         );
 
-        Dictionary<string, Command> CreateFromAssemblies (string[] assemblies);
+        Dictionary<string, ICommand> CreateFromAssemblies (string[] assemblies);
     }
 }

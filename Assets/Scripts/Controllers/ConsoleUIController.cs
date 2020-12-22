@@ -1,6 +1,6 @@
-using System;
 using UnityDevConsole.Controllers.Input;
 using UnityDevConsole.Models.Console;
+using UnityDevConsole.Models.Console.Hint;
 using UnityDevConsole.Views;
 
 namespace UnityDevConsole.Controllers.Console
@@ -9,63 +9,55 @@ namespace UnityDevConsole.Controllers.Console
     {
         readonly IConsoleModel model;
         readonly IConsoleUIView view;
+        readonly IConsoleHintModel hintModel;
 
         public ConsoleUIController (
             IConsoleModel model,
             IConsoleUIView view,
-            IConsoleInputDetectorModel input
+            IConsoleInputDetectorModel input,
+            IConsoleHintModel hintModel
         )
         {
             this.model = model;
             this.view = view;
+            this.hintModel = hintModel;
 
             model.OnEnableChange += HandleModelEnableChange;
             model.OnOutputUpdate += HandleOutputUpdate;
 
+            hintModel.OnHintSelected += HandleHintSelected;
+
             input.OnToggleVisibility += HandleOnToggleVisibility;
             input.OnSubmit += HandleOnSubmit;
-            input.OnMoveUp += HandleOnMoveUp;
-            input.OnMoveDown += HandleOnMoveDown;
-            input.OnEscape += HandleOnEscape;
 
             view.Enabled = false;
-            input.Initialize(model);
         }
 
         void HandleOnToggleVisibility () => model.Enabled = !model.Enabled;
 
         void HandleModelEnableChange (bool enabled) => view.Enabled = enabled;
 
-        void HandleOutputUpdate (string content) => view.Body.text = content;
+        void HandleOutputUpdate (string content) => view.BodyText.text = content;
 
         void HandleOnSubmit ()
         {
-            //         if (hintBox.Enabled)
-            //             inputField.text = hintBox.GetSelectedSuggestion();
-            //         else
+            if (hintModel.Enabled && hintModel.HasSelection)
+                return;
             model.Submit(view.InputField.text);
             view.InputField.text = "";
+            SelectInputField();
+        }
+
+        void HandleHintSelected (string text)
+        {
+            view.InputField.text = text;
+            SelectInputField();
+        }
+
+        void SelectInputField ()
+        {
             view.InputField.Select();
             view.InputField.ActivateInputField();
-        }
-
-        void HandleOnMoveUp ()
-        {
-            //         if (hintBox.Enabled)
-            //             hintBox.MoveSelectionUp();
-            //         else
-            //             hintBox.DisplayHint(inputField.text);
-        }
-
-        void HandleOnMoveDown ()
-        {
-            //         if (hintBox.Enabled)
-            //             hintBox.MoveSelectionDown();
-        }
-
-        void HandleOnEscape ()
-        {
-            // hintBox.Enabled = false;
         }
     }
 }

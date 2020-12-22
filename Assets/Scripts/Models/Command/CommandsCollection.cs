@@ -9,10 +9,10 @@ namespace UnityDevConsole.Models.Command
     {
         readonly object _lock = new object();
 
-        readonly Dictionary<string, Command> registeredCommands = new Dictionary<string, Command>();
+        readonly Dictionary<string, ICommand> registeredCommands = new Dictionary<string, ICommand>();
         readonly IConsoleCommandFactory commandFactory;
 
-        public IReadOnlyDictionary<string, Command> Commands => registeredCommands;
+        public IReadOnlyDictionary<string, ICommand> Commands => registeredCommands;
 
         public CommandsCollection (IConsoleCommandFactory commandFactory)
         {
@@ -25,12 +25,12 @@ namespace UnityDevConsole.Models.Command
             {
                 try
                 {
-                    Dictionary<string, Command> commands = commandFactory
+                    Dictionary<string, ICommand> commands = commandFactory
                         .CreateFromAssemblies(new[] { "Assembly-CSharp" });
 
                     lock (_lock)
                     {
-                        foreach (KeyValuePair<string, Command> command in commands)
+                        foreach (KeyValuePair<string, ICommand> command in commands)
                             registeredCommands.Add(command.Key, command.Value);
                     }
                 }
@@ -49,7 +49,7 @@ namespace UnityDevConsole.Models.Command
             bool hidden
         )
         {
-            Command command = commandFactory.Create(
+            ICommand command = commandFactory.Create(
                 commandName,
                 methodName,
                 context,

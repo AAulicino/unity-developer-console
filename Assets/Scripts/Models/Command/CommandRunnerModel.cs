@@ -31,7 +31,7 @@ namespace UnityDevConsole.Models.Command
 
         public object ExecuteCommand (string commandName, string[] args)
         {
-            if (!commandsCollection.Commands.TryGetValue(commandName, out Command command))
+            if (!commandsCollection.Commands.TryGetValue(commandName, out ICommand command))
                 return "Unknown command. " + commandName;
 
             try
@@ -45,7 +45,7 @@ namespace UnityDevConsole.Models.Command
             }
         }
 
-        object[] ParseArgs (Command command, string[] args)
+        object[] ParseArgs (ICommand command, string[] args)
         {
             object[] parsedArgs = new object[command.Parameters.Length];
 

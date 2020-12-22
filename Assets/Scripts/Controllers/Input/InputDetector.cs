@@ -15,21 +15,25 @@ namespace UnityDevConsole.Controllers.Input
 
         readonly ICoroutineRunner runner;
         readonly IInput input;
+        readonly IConsoleStateProvider console;
 
-        IConsoleStateProvider console;
         Coroutine listenRoutine;
 
         bool anyKeyLastFrame;
 
-        public ConsoleInputDetectorModel (ICoroutineRunner runner, IInput input)
+        public ConsoleInputDetectorModel (
+            ICoroutineRunner runner,
+            IInput input,
+            IConsoleStateProvider console
+        )
         {
             this.input = input;
+            this.console = console;
             this.runner = runner;
         }
 
-        public void Initialize (IConsoleStateProvider console)
+        public void Initialize ()
         {
-            this.console = console;
             listenRoutine = runner.StartCoroutine(ListenToInput());
         }
 

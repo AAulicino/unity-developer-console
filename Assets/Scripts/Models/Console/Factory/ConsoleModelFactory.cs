@@ -4,17 +4,19 @@ using UnityDevConsole.Models.Console;
 
 public static class ConsoleModelFactory
 {
-    public static ConsoleModel Create ()
+    public static ConsoleModel Create (
+        IConsoleInputHistoryModel historyModel,
+        ICommandsCollection commandsCollection
+    )
     {
-        CommandsCollection commandsCollection = new CommandsCollection(new ConsoleCommandFactory());
-
         return new ConsoleModel(
-            new ConsoleOutputModel(),
             commandsCollection,
             new CommandRunnerModel(
                 commandsCollection,
                 new TypeParserModel()
-            )
+            ),
+            new ConsoleOutputModel(),
+            historyModel
         );
     }
 }

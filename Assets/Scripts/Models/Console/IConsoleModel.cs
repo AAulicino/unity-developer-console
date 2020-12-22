@@ -1,12 +1,14 @@
 using System;
+using System.Collections.Generic;
 
 namespace UnityDevConsole.Models.Console
 {
     public interface IConsoleModel : IConsoleStateProvider
     {
+        IReadOnlyList<string> InputHistory { get; }
+
         event Action<string> OnOutputUpdate;
 
-        void Initialize ();
         void ClearOutput ();
         void Log (object obj);
         void Submit (string text);

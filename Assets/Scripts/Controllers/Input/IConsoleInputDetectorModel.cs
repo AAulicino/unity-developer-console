@@ -11,6 +11,6 @@ namespace UnityDevConsole.Controllers.Input
         event Action OnMoveDown;
         event Action OnEscape;
 
-        void Initialize (IConsoleStateProvider console);
+        void Initialize ();
     }
 }

@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using UnityDevConsole.Models.Command;
+using UnityDevConsole.Models.Console.Hint;
 
 namespace UnityDevConsole.Models.Console
 {
@@ -8,10 +10,10 @@ namespace UnityDevConsole.Models.Console
         public event Action<bool> OnEnableChange;
         public event Action<string> OnOutputUpdate;
 
-        readonly IConsoleOutputModel output;
         readonly ICommandsCollection commandsCollection;
         readonly ICommandRunnerModel commandRunner;
-
+        readonly IConsoleOutputModel output;
+        readonly IConsoleInputHistoryModel inputHistory;
         bool _enabled;
 
         public bool Enabled
@@ -24,21 +26,20 @@ namespace UnityDevConsole.Models.Console
             }
         }
 
+        public IReadOnlyList<string> InputHistory => inputHistory.InputHistory;
+
         public ConsoleModel (
-            IConsoleOutputModel output,
             ICommandsCollection commandsCollection,
-            ICommandRunnerModel commandRunner
+            ICommandRunnerModel commandRunner,
+            IConsoleOutputModel output,
+            IConsoleInputHistoryModel inputHistory
         )
         {
+            this.commandsCollection = commandsCollection;
             this.commandRunner = commandRunner;
             this.output = output;
-            this.commandsCollection = commandsCollection;
+            this.inputHistory = inputHistory;
             output.OnContentUpdate += x => OnOutputUpdate?.Invoke(x);
-        }
-
-        public void Initialize ()
-        {
-            commandsCollection.Initialize();
         }
 
         public void Submit (string text)
@@ -46,9 +47,8 @@ namespace UnityDevConsole.Models.Console
             if (string.IsNullOrEmpty(text))
                 return;
 
-            // CommandSuggestionsHandler.RegisterInputToHistory(inputField.text);
-
             Log("> " + text);
+            inputHistory.Add(text);
             Log(commandRunner.ExecuteCommand(text));
         }
 

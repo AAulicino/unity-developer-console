@@ -4,7 +4,7 @@ namespace UnityDevConsole.Models.Command
 {
     public interface ICommandsCollection
     {
-        IReadOnlyDictionary<string, Command> Commands { get; }
+        IReadOnlyDictionary<string, ICommand> Commands { get; }
 
         void Initialize ();
 
