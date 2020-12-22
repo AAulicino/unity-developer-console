@@ -1,43 +1,67 @@
-﻿using System;
-using System.Threading;
-using UnityDeveloperConsole;
-using UnityEngine;
+﻿using UnityDevConsole.Controllers.Console;
+using UnityDevConsole.Controllers.Hint;
+using UnityDevConsole.Controllers.Hint.Factory;
+using UnityDevConsole.Controllers.Input;
+using UnityDevConsole.Models.Command;
+using UnityDevConsole.Models.Console;
+using UnityDevConsole.Models.Console.Hint;
+using UnityDevConsole.Views;
+using UnityDeveloperConsole.Views.Hint;
 
 public static class DeveloperConsole
 {
-	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-	static void Initialize ()
-	{
-		//For it not to slow down the project's initialiation in case of huge amounts of commands
-		ThreadPool.QueueUserWorkItem((x) =>
-		{
-			Command[] commands = CommandsHandler.LoadCompileTimeCommands();
-			CommandSuggestionsHandler.RegisterCommands(commands);
-		});
-	}
+    static IConsoleModel model;
 
-	public static void RegisterRuntimeCommand (string commandName, string methodName, object context, bool developerOnly, bool indexed)
-	{
-		CommandsHandler.RegisterRuntimeCommand(commandName, methodName, context, developerOnly, indexed);
-	}
+    public static void Initialize ()
+    {
+        if (model != null)
+            return;
 
-	public static void UnregisterRuntimeCommand (string commandName)
-	{
-		CommandsHandler.UnregisterRuntimeCommand(commandName);
-	}
+        IConsoleInputHistoryModel historyModel = ConsoleInputHistoryModelFactory.Create();
+        ICommandsCollection commandsCollection = CommandsCollectionFactory.Create();
+        model = ConsoleModelFactory.Create(historyModel, commandsCollection);
 
-	public static object ExecuteCommand (string commandName, string[] args)
-	{
-		return CommandsHandler.ExecuteCommand(commandName, args);
-	}
+        IConsoleHintModel hintModel = ConsoleHintModelFactory.Create(
+            historyModel,
+            commandsCollection
+        );
 
-	[ConsoleCommand("test1")]
-	[ConsoleCommand("test2")]
-	[ConsoleCommand("test3")]
-	[ConsoleCommand("test4")]
-	[ConsoleCommand("test5")]
-	public static void Log (object message)
-	{
-		ConsoleUI.Instance.Log(message);
-	}
+        ConsoleUIView view = ConsoleUIViewFactory.Create();
+        IConsoleInputDetectorModel inputDetector = ConsoleInputDetectorModelFactory.Create(
+            view,
+            model
+        );
+
+        ConsoleUIControllerFactory.Create(model, view, inputDetector, hintModel);
+        ConsoleHintUIControllerFactory.Create(
+            hintModel,
+            view.HintUI,
+            view,
+            new ConsoleHintEntryUIViewFactory(),
+            inputDetector
+        );
+        commandsCollection.Initialize();
+        inputDetector.Initialize();
+    }
+
+    public static void Clear () => model?.ClearOutput();
+
+    public static void RegisterRuntimeCommand (
+        string commandName,
+        string methodName,
+        object context,
+        bool developerOnly,
+        bool hidden
+    )
+    {
+        model.RegisterRuntimeCommand(commandName, methodName, context, developerOnly, hidden);
+    }
+
+    public static void UnregisterRuntimeCommand (string commandName)
+        => model.UnregisterRuntimeCommand(commandName);
+
+    public static object ExecuteCommand (string commandName, string[] args)
+        => model.ExecuteCommand(commandName, args);
+
+    public static void Log (object message) => model.Log(message);
 }
