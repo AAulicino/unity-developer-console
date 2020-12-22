@@ -9,11 +9,12 @@ namespace UnityDevConsole.Models.Command
     {
         const BindingFlags flags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
 
-        public Dictionary<string, Command> CreateFromAssemblies (string[] assemblies)
+        public Dictionary<string, Command> CreateFromAssemblies (params string[] assemblies)
         {
             Dictionary<string, Command> commands = new Dictionary<string, Command>();
 
-            IEnumerable<MethodInfo> methods = assemblies.Select(Assembly.Load)
+            IEnumerable<MethodInfo> methods = assemblies.AsParallel()
+                .Select(Assembly.Load)
                 .SelectMany(a => a.GetTypes())
                 .SelectMany(t => t.GetMethods(flags));
 

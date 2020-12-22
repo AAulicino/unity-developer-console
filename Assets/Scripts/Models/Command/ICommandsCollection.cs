@@ -6,6 +6,8 @@ namespace UnityDevConsole.Models.Command
     {
         IReadOnlyDictionary<string, Command> Commands { get; }
 
+        void Initialize ();
+
         void RegisterRuntimeCommand (
             string commandName,
             string methodName,
@@ -13,6 +15,7 @@ namespace UnityDevConsole.Models.Command
             bool developerOnly,
             bool hidden
         );
+
         void UnregisterRuntimeCommand (string commandName);
     }
 }

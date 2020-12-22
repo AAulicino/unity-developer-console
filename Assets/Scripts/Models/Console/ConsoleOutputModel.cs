@@ -9,10 +9,10 @@ namespace UnityDevConsole.Models.Console
 
         readonly StringBuilder content = new StringBuilder();
 
-        public void Append (string text)
+        public void WriteLine (string text)
         {
             content.AppendLine(text);
-            OnContentUpdate(text);
+            OnContentUpdate(content.ToString());
         }
 
         public void Clear ()

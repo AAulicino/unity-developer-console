@@ -1,45 +1,45 @@
-﻿using System;
-using System.Threading;
-using UnityDevConsole;
+﻿using UnityDevConsole.Controllers.Console;
+using UnityDevConsole.Controllers.Input;
 using UnityDevConsole.Models.Console;
-using UnityEngine;
+using UnityDevConsole.Views;
 
 public static class DeveloperConsole
 {
-    static ConsoleModel model;
+    static IConsoleModel model;
 
     public static void Initialize ()
     {
+        if (model != null)
+            return;
+
         model = ConsoleModelFactory.Create();
+
+        ConsoleUIView view = ConsoleUIViewFactory.Create();
+        IConsoleInputDetectorModel inputDetector = ConsoleInputDetectorModelFactory.Create(view);
+
+        ConsoleUIControllerFactory.Create(model, view, inputDetector);
+        model.Initialize();
+        inputDetector.Initialize(model);
     }
 
-    // public static void ClearConsoleOutput () => model?.ClearOutput();
+    public static void Clear () => model?.ClearOutput();
 
-    // [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    // static void Initialize ()
-    // {
-    //     //For it not to slow down the project's initialization in case of huge amounts of commands
-    //     ThreadPool.QueueUserWorkItem((x) =>
-    //     {
-    //         Command[] commands = CommandsHandler.LoadCompileTimeCommands();
-    //         CommandSuggestionsHandler.RegisterCommands(commands);
-    //     });
-    // }
+    public static void RegisterRuntimeCommand (
+        string commandName,
+        string methodName,
+        object context,
+        bool developerOnly,
+        bool hidden
+    )
+    {
+        model.RegisterRuntimeCommand(commandName, methodName, context, developerOnly, hidden);
+    }
 
-    // public static void RegisterRuntimeCommand (string commandName, string methodName, object context, bool developerOnly, bool hidden)
-    // {
-    //     CommandsHandler.RegisterRuntimeCommand(commandName, methodName, context, developerOnly, hidden);
-    // }
+    public static void UnregisterRuntimeCommand (string commandName)
+        => model.UnregisterRuntimeCommand(commandName);
 
-    // public static void UnregisterRuntimeCommand (string commandName)
-    // {
-    //     CommandsHandler.UnregisterRuntimeCommand(commandName);
-    // }
-
-    // public static object ExecuteCommand (string commandName, string[] args)
-    // {
-    //     return CommandsHandler.ExecuteCommand(commandName, args);
-    // }
+    public static object ExecuteCommand (string commandName, string[] args)
+        => model.ExecuteCommand(commandName, args);
 
     public static void Log (object message) => model.Log(message);
 }

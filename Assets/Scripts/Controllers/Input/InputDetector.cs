@@ -42,6 +42,8 @@ namespace UnityDevConsole.Controllers.Input
                 if (input.GetKeyDown(KeyCode.BackQuote) && !anyKeyLastFrame)
                     OnToggleVisibility?.Invoke();
 
+                anyKeyLastFrame = input.AnyKey;
+
                 if (!console.Enabled)
                     continue;
 
@@ -53,9 +55,6 @@ namespace UnityDevConsole.Controllers.Input
                     OnMoveDown?.Invoke();
                 else if (input.GetKeyDown(KeyCode.Escape))
                     OnEscape?.Invoke();
-
-                anyKeyLastFrame = input.AnyKey;
-                yield return null;
             }
         }
 

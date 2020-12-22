@@ -1,7 +1,11 @@
+using System;
+
 namespace UnityDevConsole.Models.Console
 {
     public interface IConsoleStateProvider
     {
-        bool Enabled { get; }
+        event Action<bool> OnEnableChange;
+
+        bool Enabled { get; set; }
     }
 }

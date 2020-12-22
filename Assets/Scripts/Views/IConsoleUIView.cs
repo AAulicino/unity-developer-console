@@ -3,13 +3,12 @@ using UnityEngine.UI;
 
 namespace UnityDevConsole.Views
 {
-    public interface IConsoleUIView
+    public interface IConsoleUIView : ICoroutineRunner
     {
         bool Enabled { get; set; }
         // HintBoxUI HintBox { get; }
         InputField Body { get; }
         InputField InputField { get; }
-        GameObject UIContainer { get; }
     }
 }
 /*

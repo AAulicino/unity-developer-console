@@ -4,6 +4,6 @@ public static class CommandsUtils
     [ConsoleCommand("clear")]
     static void ClearConsoleOutput ()
     {
-        // ConesoleManager.ClearConsoleOutput();
+        DeveloperConsole.Clear();
     }
 }

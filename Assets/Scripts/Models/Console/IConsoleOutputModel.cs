@@ -6,7 +6,7 @@ namespace UnityDevConsole.Models.Console
     {
         event Action<string> OnContentUpdate;
 
-        void Append (string text);
+        void WriteLine (string text);
         void Clear ();
     }
 }

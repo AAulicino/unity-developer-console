@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace UnityDevConsole.Models.Command
 {
     public class CommandsCollection : ICommandsCollection
     {
+        readonly object _lock = new object();
+
         readonly Dictionary<string, Command> registeredCommands = new Dictionary<string, Command>();
         readonly IConsoleCommandFactory commandFactory;
 
@@ -16,6 +17,28 @@ namespace UnityDevConsole.Models.Command
         public CommandsCollection (IConsoleCommandFactory commandFactory)
         {
             this.commandFactory = commandFactory;
+        }
+
+        public void Initialize ()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Dictionary<string, Command> commands = commandFactory
+                        .CreateFromAssemblies(new[] { "Assembly-CSharp" });
+
+                    lock (_lock)
+                    {
+                        foreach (KeyValuePair<string, Command> command in commands)
+                            registeredCommands.Add(command.Key, command.Value);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogException(ex);
+                }
+            });
         }
 
         public void RegisterRuntimeCommand (
@@ -34,20 +57,24 @@ namespace UnityDevConsole.Models.Command
                 hidden
             );
 
-            if (registeredCommands.ContainsKey(commandName))
+            lock (_lock)
             {
-                Debug.LogError(
-                    "[UnityDevConsole] Failed to insert runtime command. "
-                    + "Reason: duplicate command name."
-                );
+                if (registeredCommands.ContainsKey(commandName))
+                {
+                    Debug.LogError(
+                        "[UnityDevConsole] Failed to insert runtime command. "
+                        + "Reason: duplicate command name."
+                    );
+                }
+                else
+                    registeredCommands.Add(commandName, command);
             }
-            else
-                registeredCommands.Add(commandName, command);
         }
 
         public void UnregisterRuntimeCommand (string commandName)
         {
-            registeredCommands.Remove(commandName);
+            lock (_lock)
+                registeredCommands.Remove(commandName);
         }
     }
 }

@@ -6,10 +6,13 @@ public static class ConsoleModelFactory
 {
     public static ConsoleModel Create ()
     {
+        CommandsCollection commandsCollection = new CommandsCollection(new ConsoleCommandFactory());
+
         return new ConsoleModel(
             new ConsoleOutputModel(),
+            commandsCollection,
             new CommandRunnerModel(
-                new CommandsCollection(new ConsoleCommandFactory()),
+                commandsCollection,
                 new TypeParserModel()
             )
         );
