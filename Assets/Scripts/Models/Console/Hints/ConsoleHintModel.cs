@@ -54,7 +54,7 @@ namespace UnityDevConsole.Models.Console.Hint
                 return;
             if (SelectedIndex == NO_SELECTION)
                 return;
-            OnHintSelected?.Invoke(ActiveHints[SelectedIndex]);
+            OnHintSelected?.Invoke(ActiveHints[SelectedIndex].Split(' ')[0]);
         }
 
         public void OnInputChange (string input) => UpdateHints(input);

@@ -9,4 +9,10 @@ public class Test : MonoBehaviour
     {
         DeveloperConsole.Initialize();
     }
+
+    [ConsoleCommand("Hmm")]
+    static string Hmm (string para)
+    {
+        return "yes! " + para;
+    }
 }
