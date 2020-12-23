@@ -16,9 +16,10 @@ namespace UnityDevConsole.Models.Console.Hint
         readonly IConsoleInputHistoryModel history;
         bool _enabled;
 
-        public IReadOnlyList<string> InputHistory => history.InputHistory;
+        readonly List<string> activeHints = new List<string>();
 
-        public string[] ActiveHints { get; private set; }
+        public IReadOnlyList<string> InputHistory => history.InputHistory;
+        public IReadOnlyList<string> ActiveHints => activeHints;
 
         public bool Enabled
         {
@@ -41,6 +42,8 @@ namespace UnityDevConsole.Models.Console.Hint
 
         public void Enable ()
         {
+            if (Enabled)
+                return;
             SelectedIndex = NO_SELECTION;
             Enabled = true;
         }
@@ -60,47 +63,53 @@ namespace UnityDevConsole.Models.Console.Hint
         {
             if (!Enabled)
                 return;
-            SelectedIndex = Mathf.Max(0, --SelectedIndex);
+            SelectedIndex = ++SelectedIndex % ActiveHints.Count;
         }
 
         public void MoveSelectionDown ()
         {
             if (!Enabled)
                 return;
-            SelectedIndex = Mathf.Min(ActiveHints.Length - 1, ++SelectedIndex);
+            if (--SelectedIndex < 0)
+                SelectedIndex = ActiveHints.Count - 1;
         }
 
         public void SelectCustom (string text)
         {
             if (!Enabled)
                 return;
-            SelectedIndex = Array.IndexOf(ActiveHints, text);
+            SelectedIndex = activeHints.IndexOf(text);
         }
 
         public void Disable ()
         {
+            if (!Enabled)
+                return;
             Enabled = false;
         }
 
         void UpdateHints (string input)
         {
-            List<string> results = new List<string>();
+            activeHints.Clear();
+
+            if (string.IsNullOrEmpty(input))
+                return;
 
             const int MAX_RESULTS = 10;
             foreach (ICommand command in commandCollection.Commands.Values)
             {
-                if (results.Count >= MAX_RESULTS)
+                if (activeHints.Count >= MAX_RESULTS)
                     break;
 
                 if (command.Hidden)
                     continue;
 
                 if (command.Name.StartsWith(input, StringComparison.OrdinalIgnoreCase))
-                    results.Add(command.FullName);
+                    activeHints.Add(command.FullName);
             }
 
-            results.Sort();
-            ActiveHints = results.ToArray();
+            SelectedIndex = NO_SELECTION;
+            activeHints.Sort();
         }
     }
 }

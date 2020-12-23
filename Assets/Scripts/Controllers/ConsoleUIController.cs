@@ -1,7 +1,9 @@
+using System.Collections;
 using UnityDevConsole.Controllers.Input;
 using UnityDevConsole.Models.Console;
 using UnityDevConsole.Models.Console.Hint;
 using UnityDevConsole.Views;
+using UnityEngine;
 
 namespace UnityDevConsole.Controllers.Console
 {
@@ -10,6 +12,7 @@ namespace UnityDevConsole.Controllers.Console
         readonly IConsoleModel model;
         readonly IConsoleUIView view;
         readonly IConsoleHintModel hintModel;
+        readonly WaitForEndOfFrame endOfFrameWaiter = new WaitForEndOfFrame();
 
         public ConsoleUIController (
             IConsoleModel model,
@@ -54,10 +57,13 @@ namespace UnityDevConsole.Controllers.Console
             SelectInputField();
         }
 
-        void SelectInputField ()
+        void SelectInputField () => view.StartCoroutine(SelectInputFieldRoutine());
+
+        IEnumerator SelectInputFieldRoutine ()
         {
-            view.InputField.Select();
             view.InputField.ActivateInputField();
+            yield return endOfFrameWaiter;
+            view.InputField.MoveTextEnd(false);
         }
     }
 }

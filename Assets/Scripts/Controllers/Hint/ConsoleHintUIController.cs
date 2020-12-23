@@ -11,9 +11,8 @@ namespace UnityDevConsole.Controllers.Hint
         readonly IConsoleHintModel model;
         readonly IHintUIView view;
         readonly IConsoleHintEntryUIViewFactory entryFactory;
+        readonly IConsoleInputDetectorModel input;
         readonly List<IHintEntryUIView> hintEntries = new List<IHintEntryUIView>();
-
-        int hintCount;
 
         public ConsoleHintUIController (
             IConsoleHintModel model,
@@ -26,28 +25,33 @@ namespace UnityDevConsole.Controllers.Hint
             this.model = model;
             this.view = hintView;
             this.entryFactory = entryFactory;
-
+            this.input = input;
             model.OnEnableChange += HandleEnableChange;
             consoleView.InputField.onValueChanged.AddListener(HandleInputValueChanged);
 
-            input.OnSubmit += HandleSubmit;
-            input.OnEscape += HandleEscape;
-            input.OnMoveUp += HandleMoveUp;
-            input.OnMoveDown += HandleMoveDown;
+            hintView.SetActive(false);
         }
 
-        void HandleEnableChange (bool value) => view.SetActive(value);
+        void HandleEnableChange (bool value)
+        {
+            if (value)
+                AddInputListeners();
+            else
+                RemoveInputListeners();
+            view.SetActive(value);
+        }
 
         void HandleInputValueChanged (string input)
         {
             model.OnInputChange(input);
-            if (model.Enabled && model.ActiveHints.Length == 0)
+            if (model.ActiveHints.Count == 0)
             {
-                model.Disable();
+                if (model.Enabled)
+                    model.Disable();
                 return;
             }
             model.Enable();
-            Display(model.ActiveHints);
+            UpdateHints();
             UpdateHighlight();
         }
 
@@ -66,9 +70,9 @@ namespace UnityDevConsole.Controllers.Hint
             UpdateHighlight();
         }
 
-        void Display (string[] hints)
+        void UpdateHints ()
         {
-            hintCount = hints.Length;
+            int hintCount = model.ActiveHints.Count;
 
             while (hintCount > hintEntries.Count)
                 hintEntries.Add(entryFactory.Create(view.EntriesContainer));
@@ -77,7 +81,7 @@ namespace UnityDevConsole.Controllers.Hint
             {
                 if (i < hintCount)
                 {
-                    hintEntries[i].Text = hints[i];
+                    hintEntries[i].Text = model.ActiveHints[i];
                     hintEntries[i].SetActive(true);
                 }
                 else
@@ -95,6 +99,22 @@ namespace UnityDevConsole.Controllers.Hint
 
             view.SelectionOutline.transform.position = hintEntries[model.SelectedIndex].Position;
             view.SelectionOutline.SetActive(true);
+        }
+
+        void AddInputListeners ()
+        {
+            input.OnSubmit += HandleSubmit;
+            input.OnEscape += HandleEscape;
+            input.OnMoveUp += HandleMoveUp;
+            input.OnMoveDown += HandleMoveDown;
+        }
+
+        void RemoveInputListeners ()
+        {
+            input.OnSubmit -= HandleSubmit;
+            input.OnEscape -= HandleEscape;
+            input.OnMoveUp -= HandleMoveUp;
+            input.OnMoveDown -= HandleMoveDown;
         }
     }
 }
