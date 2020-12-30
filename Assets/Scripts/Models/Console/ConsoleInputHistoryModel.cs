@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityDevConsole.Settings;
 
 namespace UnityDevConsole.Models.Console
 {

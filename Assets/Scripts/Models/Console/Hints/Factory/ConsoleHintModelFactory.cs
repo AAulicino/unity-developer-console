@@ -1,4 +1,5 @@
 using UnityDevConsole.Models.Command;
+using UnityDevConsole.Settings;
 
 namespace UnityDevConsole.Models.Console.Hint
 {

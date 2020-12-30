@@ -1,4 +1,5 @@
 using UnityDevConsole.Models.Console;
+using UnityDevConsole.Settings;
 
 namespace UnityDevConsole.Controllers.Input
 {

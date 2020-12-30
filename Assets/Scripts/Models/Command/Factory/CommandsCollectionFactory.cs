@@ -1,3 +1,5 @@
+using UnityDevConsole.Settings;
+
 namespace UnityDevConsole.Models.Command
 {
     public static class CommandsCollectionFactory

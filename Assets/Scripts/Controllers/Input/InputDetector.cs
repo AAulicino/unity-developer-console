@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityDevConsole.Models.Console;
+using UnityDevConsole.Settings;
 using UnityEngine;
 
 namespace UnityDevConsole.Controllers.Input

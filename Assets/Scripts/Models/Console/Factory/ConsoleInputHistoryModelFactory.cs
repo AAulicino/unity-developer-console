@@ -1,3 +1,5 @@
+using UnityDevConsole.Settings;
+
 namespace UnityDevConsole.Models.Console
 {
     public static class ConsoleInputHistoryModelFactory

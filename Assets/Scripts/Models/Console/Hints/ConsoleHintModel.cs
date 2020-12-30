@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityDevConsole.Models.Command;
+using UnityDevConsole.Settings;
 using UnityEngine;
 
 namespace UnityDevConsole.Models.Console.Hint
