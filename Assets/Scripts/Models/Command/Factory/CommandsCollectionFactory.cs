@@ -2,9 +2,9 @@ namespace UnityDevConsole.Models.Command
 {
     public static class CommandsCollectionFactory
     {
-        public static ICommandsCollection Create ()
+        public static ICommandsCollection Create (IConsoleSettings settings)
         {
-            return new CommandsCollection(new ConsoleCommandFactory());
+            return new CommandsCollection(settings, new ConsoleCommandFactory());
         }
     }
 }

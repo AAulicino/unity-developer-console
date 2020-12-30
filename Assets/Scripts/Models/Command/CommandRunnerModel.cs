@@ -38,10 +38,14 @@ namespace UnityDevConsole.Models.Command
             {
                 return command.Invoke(ParseArgs(command, args));
             }
+            catch (ArgumentException)
+            {
+                return "Command Failed. Incorrect parameters usage.";
+            }
             catch (Exception ex)
             {
                 Debug.LogException(ex);
-                return "[DeveloperConsole] Command Failed. Ex: " + ex;
+                return "Command Failed. Ex: " + ex.Message;
             }
         }
 

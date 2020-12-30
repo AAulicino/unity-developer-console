@@ -2,9 +2,9 @@ namespace UnityDevConsole.Models.Console
 {
     public static class ConsoleInputHistoryModelFactory
     {
-        public static IConsoleInputHistoryModel Create ()
+        public static IConsoleInputHistoryModel Create (IConsoleSettings settings)
         {
-            return new ConsoleInputHistoryModel();
+            return new ConsoleInputHistoryModel(settings);
         }
     }
 }

@@ -14,9 +14,10 @@ namespace UnityDevConsole.Models.Console.Hint
 
         readonly ICommandsCollection commandCollection;
         readonly IConsoleInputHistoryModel history;
+        readonly IConsoleSettings settings;
         bool _enabled;
 
-        readonly List<string> activeHints = new List<string>();
+        readonly List<string> activeHints;
 
         public IReadOnlyList<string> InputHistory => history.InputHistory;
         public IReadOnlyList<string> ActiveHints => activeHints;
@@ -34,10 +35,16 @@ namespace UnityDevConsole.Models.Console.Hint
         public int SelectedIndex { get; private set; }
         public bool HasSelection => SelectedIndex != NO_SELECTION;
 
-        public ConsoleHintModel (ICommandsCollection commands, IConsoleInputHistoryModel history)
+        public ConsoleHintModel (
+            ICommandsCollection commands,
+            IConsoleInputHistoryModel history,
+            IConsoleSettings settings
+        )
         {
             this.commandCollection = commands;
             this.history = history;
+            this.settings = settings;
+            activeHints = new List<string>(settings.MaxHints);
         }
 
         public void Enable ()
@@ -95,10 +102,9 @@ namespace UnityDevConsole.Models.Console.Hint
             if (string.IsNullOrEmpty(input))
                 return;
 
-            const int MAX_RESULTS = 10;
             foreach (ICommand command in commandCollection.Commands.Values)
             {
-                if (activeHints.Count >= MAX_RESULTS)
+                if (activeHints.Count >= settings.MaxHints)
                     break;
 
                 if (command.Hidden)

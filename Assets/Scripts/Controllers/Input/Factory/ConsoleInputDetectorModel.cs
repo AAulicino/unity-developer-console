@@ -6,10 +6,11 @@ namespace UnityDevConsole.Controllers.Input
     {
         public static ConsoleInputDetectorModel Create (
             ICoroutineRunner runner,
-            IConsoleStateProvider console
+            IConsoleStateProvider console,
+            IConsoleSettings settings
         )
         {
-            return new ConsoleInputDetectorModel(runner, new UnityInput(), console);
+            return new ConsoleInputDetectorModel(runner, new UnityInput(), console, settings);
         }
     }
 }

@@ -6,12 +6,14 @@ namespace UnityDevConsole.Models.Console.Hint
     {
         public static IConsoleHintModel Create (
             IConsoleInputHistoryModel history,
-            ICommandsCollection commandsCollection
+            ICommandsCollection commandsCollection,
+            IConsoleSettings settings
         )
         {
             return new ConsoleHintModel(
                 commandsCollection,
-                history
+                history,
+                settings
             );
         }
     }

@@ -10,12 +10,14 @@ namespace UnityDevConsole.Models.Command
         readonly object _lock = new object();
 
         readonly Dictionary<string, ICommand> registeredCommands = new Dictionary<string, ICommand>();
+        readonly IConsoleSettings settings;
         readonly IConsoleCommandFactory commandFactory;
 
         public IReadOnlyDictionary<string, ICommand> Commands => registeredCommands;
 
-        public CommandsCollection (IConsoleCommandFactory commandFactory)
+        public CommandsCollection (IConsoleSettings settings, IConsoleCommandFactory commandFactory)
         {
+            this.settings = settings;
             this.commandFactory = commandFactory;
         }
 
@@ -26,7 +28,7 @@ namespace UnityDevConsole.Models.Command
                 try
                 {
                     Dictionary<string, ICommand> commands = commandFactory
-                        .CreateFromAssemblies(new[] { "Assembly-CSharp" });
+                        .CreateFromAssemblies(settings.Assemblies);
 
                     lock (_lock)
                     {

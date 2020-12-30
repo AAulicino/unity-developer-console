@@ -1,10 +1,12 @@
-﻿using UnityDevConsole.Controllers.Console;
+﻿using System;
+using UnityDevConsole.Controllers.Console;
 using UnityDevConsole.Controllers.Hint;
 using UnityDevConsole.Controllers.Hint.Factory;
 using UnityDevConsole.Controllers.Input;
 using UnityDevConsole.Models.Command;
 using UnityDevConsole.Models.Console;
 using UnityDevConsole.Models.Console.Hint;
+using UnityDevConsole.Settings;
 using UnityDevConsole.Views;
 using UnityDeveloperConsole.Views.Hint;
 
@@ -17,19 +19,22 @@ public static class DeveloperConsole
         if (model != null)
             return;
 
-        IConsoleInputHistoryModel historyModel = ConsoleInputHistoryModelFactory.Create();
-        ICommandsCollection commandsCollection = CommandsCollectionFactory.Create();
+        IConsoleSettings settings = ConsoleSettings.Instance;
+        IConsoleInputHistoryModel historyModel = ConsoleInputHistoryModelFactory.Create(settings);
+        ICommandsCollection commandsCollection = CommandsCollectionFactory.Create(settings);
         model = ConsoleModelFactory.Create(historyModel, commandsCollection);
 
         IConsoleHintModel hintModel = ConsoleHintModelFactory.Create(
             historyModel,
-            commandsCollection
+            commandsCollection,
+            settings
         );
 
         ConsoleUIView view = ConsoleUIViewFactory.Create();
         IConsoleInputDetectorModel inputDetector = ConsoleInputDetectorModelFactory.Create(
             view,
-            model
+            model,
+            settings
         );
 
         ConsoleUIControllerFactory.Create(model, view, inputDetector, hintModel);

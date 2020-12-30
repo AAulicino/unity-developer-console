@@ -14,6 +14,7 @@ namespace UnityDevConsole.Controllers.Input
         public event Action OnEscape;
 
         readonly ICoroutineRunner runner;
+        readonly IConsoleSettings settings;
         readonly IInput input;
         readonly IConsoleStateProvider console;
 
@@ -24,12 +25,14 @@ namespace UnityDevConsole.Controllers.Input
         public ConsoleInputDetectorModel (
             ICoroutineRunner runner,
             IInput input,
-            IConsoleStateProvider console
+            IConsoleStateProvider console,
+            IConsoleSettings settings
         )
         {
             this.input = input;
             this.console = console;
             this.runner = runner;
+            this.settings = settings;
         }
 
         public void Initialize ()
@@ -43,7 +46,7 @@ namespace UnityDevConsole.Controllers.Input
             {
                 yield return null;
 
-                if (input.GetKeyDown(KeyCode.BackQuote) && !anyKeyLastFrame)
+                if (input.GetKeyDown(settings.ToggleConsole) && !anyKeyLastFrame)
                     OnToggleVisibility?.Invoke();
 
                 anyKeyLastFrame = input.AnyKey;
@@ -51,13 +54,13 @@ namespace UnityDevConsole.Controllers.Input
                 if (!console.Enabled)
                     continue;
 
-                if (input.GetKeyDown(KeyCode.Return) || input.GetKeyDown(KeyCode.KeypadEnter))
+                if (input.GetKeyDown(settings.Submit) || input.GetKeyDown(settings.Submit2))
                     OnSubmit();
-                else if (input.GetKeyDown(KeyCode.UpArrow))
+                else if (input.GetKeyDown(settings.HintUp))
                     OnMoveUp?.Invoke();
-                else if (input.GetKeyDown(KeyCode.DownArrow))
+                else if (input.GetKeyDown(settings.HintDown))
                     OnMoveDown?.Invoke();
-                else if (input.GetKeyDown(KeyCode.Escape))
+                else if (input.GetKeyDown(settings.CloseHint))
                     OnEscape?.Invoke();
             }
         }
