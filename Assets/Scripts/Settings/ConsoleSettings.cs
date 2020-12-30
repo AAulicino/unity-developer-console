@@ -6,10 +6,18 @@ namespace UnityDevConsole.Settings
     public class ConsoleSettings : ScriptableObject, IConsoleSettings
     {
         public const string SETTINGS_PATH = "UnityDeveloperConsole/Resources";
-        public const string SETTINGS_NAME = "ConsoleSettings.asset";
+        public const string SETTINGS_NAME = "ConsoleSettings";
 
         static ConsoleSettings _instance;
-        public static ConsoleSettings Instance => _instance ?? (_instance = LoadInstance());
+        public static ConsoleSettings Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = LoadInstance();
+                return _instance;
+            }
+        }
 
         [SerializeField] bool autoInitialize = true;
         [SerializeField] int historySize = 10;
@@ -35,6 +43,6 @@ namespace UnityDevConsole.Settings
         public KeyCode HintDown => hintDown;
 
         public static ConsoleSettings LoadInstance ()
-            => Resources.Load<ConsoleSettings>(Path.Combine(SETTINGS_PATH, SETTINGS_NAME));
+            => Resources.Load<ConsoleSettings>(SETTINGS_NAME);
     }
 }

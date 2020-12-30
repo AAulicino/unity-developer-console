@@ -16,7 +16,7 @@ public class ConsoleSettingsEditor : Editor
             string path = Path.Combine(Application.dataPath, SETTINGS_PATH);
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
-            string path2 = Path.Combine(Path.Combine("Assets", SETTINGS_PATH), SETTINGS_NAME);
+            string path2 = Path.Combine("Assets", SETTINGS_PATH, SETTINGS_NAME + ".asset");
             AssetDatabase.CreateAsset(settings, path2);
         }
         Debug.Log(settings);
