@@ -1,6 +1,4 @@
-﻿using System;
-using UnityDevConsole.Controllers.Console;
-using UnityDevConsole.Controllers.Hint;
+﻿using UnityDevConsole.Controllers.Console;
 using UnityDevConsole.Controllers.Hint.Factory;
 using UnityDevConsole.Controllers.Input;
 using UnityDevConsole.Models.Command;
@@ -9,10 +7,18 @@ using UnityDevConsole.Models.Console.Hint;
 using UnityDevConsole.Settings;
 using UnityDevConsole.Views;
 using UnityDeveloperConsole.Views.Hint;
+using UnityEngine;
 
 public static class DeveloperConsole
 {
     static IConsoleModel model;
+
+    [RuntimeInitializeOnLoadMethod]
+    static void AutoInitialize ()
+    {
+        if (ConsoleSettings.Instance.AutoInitialize)
+            Initialize();
+    }
 
     public static void Initialize ()
     {

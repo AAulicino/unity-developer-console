@@ -14,5 +14,6 @@ namespace UnityDevConsole.Settings
         KeyCode Submit2 { get; }
         KeyCode HintUp { get; }
         KeyCode HintDown { get; }
+        bool AutoInitialize { get; }
     }
 }

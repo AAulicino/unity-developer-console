@@ -19,7 +19,6 @@ public class ConsoleSettingsEditor : Editor
             string path2 = Path.Combine("Assets", SETTINGS_PATH, SETTINGS_NAME + ".asset");
             AssetDatabase.CreateAsset(settings, path2);
         }
-        Debug.Log(settings);
         Selection.activeObject = settings;
     }
 }
