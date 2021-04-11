@@ -29,27 +29,24 @@ namespace UnityDevConsole.Models.Command
 
         public void Initialize ()
         {
-            Task.Run(() =>
+            try
             {
-                try
-                {
-                    Dictionary<string, ICommandModel> commands = commandFactory
-                        .CreateFromAssemblies(settings.Assemblies);
+                IReadOnlyDictionary<string, ICommandModel> commands = commandFactory
+                    .CreateFromAssemblies(settings.Assemblies);
 
-                    lock (_lock)
-                    {
-                        foreach (KeyValuePair<string, ICommandModel> command in commands)
-                            registeredCommands.Add(command.Key, command.Value);
-                    }
-                }
-                catch (Exception ex)
+                lock (_lock)
                 {
-                    Debug.LogException(ex);
+                    foreach (KeyValuePair<string, ICommandModel> command in commands)
+                        registeredCommands.Add(command.Key, command.Value);
                 }
-            });
+            }
+            catch (Exception ex)
+            {
+                Debug.LogException(ex);
+            }
         }
 
-        public void RegisterRuntimeCommand (
+        public bool RegisterRuntimeCommand (
             string commandName,
             string methodName,
             object context,
@@ -73,9 +70,10 @@ namespace UnityDevConsole.Models.Command
                         "[UnityDevConsole] Failed to insert runtime command. "
                         + "Reason: duplicate command name."
                     );
+                    return false;
                 }
-                else
-                    registeredCommands.Add(commandName, command);
+                registeredCommands.Add(commandName, command);
+                return true;
             }
         }
 

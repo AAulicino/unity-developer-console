@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
 
 namespace UnityDevConsole.Models.Command
@@ -10,7 +9,7 @@ namespace UnityDevConsole.Models.Command
         readonly object context;
 
         public string Name { get; }
-        public string FullName { get; }
+        public string Description { get; }
         public ParameterInfo[] Parameters { get; }
         public bool Hidden { get; }
         public bool DeveloperOnly { get; }
@@ -42,7 +41,7 @@ namespace UnityDevConsole.Models.Command
             DeveloperOnly = developerOnly;
 
             string parameters = string.Join(" ", Parameters.Select(x => x.Name).ToArray());
-            FullName = $"{commandName} <color=#ff8575>{parameters}</color>";
+            Description = $"{commandName} <color=#ff8575>{parameters}</color>";
         }
 
         public int CompareTo (CommandModel other) => Name.CompareTo(other);

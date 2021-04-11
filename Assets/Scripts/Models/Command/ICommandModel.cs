@@ -6,7 +6,7 @@ namespace UnityDevConsole.Models.Command
     public interface ICommandModel : IComparable<CommandModel>
     {
         string Name { get; }
-        string FullName { get; }
+        string Description { get; }
         ParameterInfo[] Parameters { get; }
         bool Hidden { get; }
         bool DeveloperOnly { get; }

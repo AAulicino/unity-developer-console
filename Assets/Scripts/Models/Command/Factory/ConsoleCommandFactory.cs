@@ -9,7 +9,7 @@ namespace UnityDevConsole.Models.Command
     {
         const BindingFlags flags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
 
-        public Dictionary<string, ICommandModel> CreateFromAssemblies (params string[] assemblies)
+        public IReadOnlyDictionary<string, ICommandModel> CreateFromAssemblies (string[] assemblies)
         {
             Dictionary<string, ICommandModel> commands = new Dictionary<string, ICommandModel>();
 

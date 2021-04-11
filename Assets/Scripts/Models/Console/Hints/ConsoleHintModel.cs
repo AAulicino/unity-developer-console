@@ -112,7 +112,7 @@ namespace UnityDevConsole.Models.Console.Hint
                     continue;
 
                 if (command.Name.StartsWith(input, StringComparison.OrdinalIgnoreCase))
-                    activeHints.Add(command.FullName);
+                    activeHints.Add(command.Description);
             }
 
             SelectedIndex = NO_SELECTION;

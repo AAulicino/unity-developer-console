@@ -1,7 +1,13 @@
 ﻿using System;
 
+public interface IConsoleCommandAttribute
+{
+    bool DeveloperOnly { get; set; }
+    bool Hidden { get; set; }
+}
+
 [AttributeUsage(AttributeTargets.Method, Inherited = false, AllowMultiple = true)]
-public sealed class ConsoleCommandAttribute : Attribute
+public sealed class ConsoleCommandAttribute : Attribute, IConsoleCommandAttribute
 {
     public readonly string CommandName;
 

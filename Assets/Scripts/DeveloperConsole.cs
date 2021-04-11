@@ -1,4 +1,5 @@
-﻿using UnityDevConsole.Controllers.Console;
+﻿using System.Threading.Tasks;
+using UnityDevConsole.Controllers.Console;
 using UnityDevConsole.Controllers.Hint.Factory;
 using UnityDevConsole.Controllers.Input;
 using UnityDevConsole.Models.Command;
@@ -6,7 +7,6 @@ using UnityDevConsole.Models.Console;
 using UnityDevConsole.Models.Console.Hint;
 using UnityDevConsole.Settings;
 using UnityDevConsole.Views;
-using UnityDeveloperConsole.Views.Hint;
 using UnityEngine;
 
 public static class DeveloperConsole
@@ -50,7 +50,7 @@ public static class DeveloperConsole
             view,
             inputDetector
         );
-        commandsCollection.Initialize();
+        Task.Run(commandsCollection.Initialize);
         inputDetector.Initialize();
     }
 

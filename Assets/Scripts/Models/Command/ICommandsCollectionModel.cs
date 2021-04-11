@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace UnityDevConsole.Models.Command
 {
@@ -8,7 +9,7 @@ namespace UnityDevConsole.Models.Command
 
         void Initialize ();
 
-        void RegisterRuntimeCommand (
+        bool RegisterRuntimeCommand (
             string commandName,
             string methodName,
             object context,

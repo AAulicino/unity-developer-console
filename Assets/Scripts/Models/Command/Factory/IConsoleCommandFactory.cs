@@ -12,6 +12,6 @@ namespace UnityDevConsole.Models.Command
             bool hidden
         );
 
-        Dictionary<string, ICommandModel> CreateFromAssemblies (string[] assemblies);
+        IReadOnlyDictionary<string, ICommandModel> CreateFromAssemblies (string[] assemblies);
     }
 }
