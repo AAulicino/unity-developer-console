@@ -19,15 +19,15 @@ namespace UnityDevConsole.Models.Command.Parser
 
         public object Parse (string text, Type targetType)
         {
+            if (customTypes.TryGetValue(targetType, out ParseHandler parser))
+                return parser.Invoke(text);
+
             try
             {
                 return Convert.ChangeType(text, targetType);
             }
-            catch (FormatException inner)
+            catch (Exception inner)
             {
-                if (customTypes.TryGetValue(targetType, out ParseHandler parser))
-                    return parser.Invoke(text);
-
                 throw new FormatException(
                     $"No support for parsing {targetType}. "
                     + "You can register a custom parser using TypeParser.RegisterCustomType",

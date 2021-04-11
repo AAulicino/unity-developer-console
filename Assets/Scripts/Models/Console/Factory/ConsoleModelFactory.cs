@@ -13,7 +13,7 @@ public static class ConsoleModelFactory
             commandsCollection,
             new CommandRunnerModel(
                 commandsCollection,
-                new TypeParserModel()
+                new CommandParserModel(new TypeParserModel())
             ),
             new ConsoleOutputModel(),
             historyModel
