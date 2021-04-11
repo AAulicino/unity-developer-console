@@ -3,7 +3,7 @@ using System.Reflection;
 using NUnit.Framework;
 using UnityDevConsole.Models.Command;
 
-namespace UnityDeveloperConsole.Tests.Command
+namespace UnityDevConsole.Tests.Command
 {
     public class CommandParserTests
     {

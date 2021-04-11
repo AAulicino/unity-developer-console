@@ -2,7 +2,7 @@ using System;
 using UnityDevConsole;
 using UnityDevConsole.Models.Command.Parser;
 
-namespace UnityDeveloperConsole.Tests.Command
+namespace UnityDevConsole.Tests.Command
 {
     public class TestTypeParserModel : ITypeParserModel
     {

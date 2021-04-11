@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using UnityDevConsole.Models.Command;
 
-namespace UnityDeveloperConsole.Tests.Command
+namespace UnityDevConsole.Tests.Command
 {
     public class CommandRunnerModelTests
     {
@@ -38,7 +38,7 @@ namespace UnityDeveloperConsole.Tests.Command
 
             commandParser.ParseArgsReturnValue = new object[] { 3 };
 
-            Model.ExecuteCommand("foo", new [] { "3" });
+            Model.ExecuteCommand("foo", new[] { "3" });
 
             Assert.AreEqual(3, result[0]);
         }
@@ -52,7 +52,7 @@ namespace UnityDeveloperConsole.Tests.Command
             command.OnInvokeCalled += x => result = x;
             commandsCollection.Commands.Add("foo", command);
 
-            commandParser.ParseCommandReturnValue = ("foo", new [] { "3" });
+            commandParser.ParseCommandReturnValue = ("foo", new[] { "3" });
             commandParser.ParseArgsReturnValue = new object[] { 3 };
 
             Model.ExecuteCommand("foo 3");

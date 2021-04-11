@@ -2,7 +2,7 @@ using UnityDevConsole.Settings;
 using UnityDevConsole.Views.Hint;
 using UnityEngine;
 
-namespace UnityDeveloperConsole.Views.Hint
+namespace UnityDevConsole.Views.Hint
 {
     public class ConsoleHintEntryUIViewFactory : IConsoleHintEntryUIViewFactory
     {

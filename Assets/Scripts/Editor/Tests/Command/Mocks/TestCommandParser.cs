@@ -1,6 +1,6 @@
 using UnityDevConsole.Models.Command;
 
-namespace UnityDeveloperConsole.Tests.Command
+namespace UnityDevConsole.Tests.Command
 {
     public class TestCommandParser : ICommandParser
     {

@@ -3,7 +3,6 @@ using UnityDevConsole.Models.Console.Hint;
 using UnityDevConsole.Settings;
 using UnityDevConsole.Views;
 using UnityDevConsole.Views.Hint;
-using UnityDeveloperConsole.Views.Hint;
 
 namespace UnityDevConsole.Controllers.Hint.Factory
 {

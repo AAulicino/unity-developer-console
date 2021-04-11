@@ -1,11 +1,11 @@
 using System.Linq;
 using NUnit.Framework;
 using UnityDevConsole.Models.Command;
-using UnityDeveloperConsole.Tests.Command.Factory;
-using UnityDeveloperConsole.Tests.Settings;
+using UnityDevConsole.Tests.Command.Factory;
+using UnityDevConsole.Tests.Settings;
 using UnityEngine.TestTools;
 
-namespace UnityDeveloperConsole.Tests.Command
+namespace UnityDevConsole.Tests.Command
 {
     public class CommandsCollectionModelTests
     {

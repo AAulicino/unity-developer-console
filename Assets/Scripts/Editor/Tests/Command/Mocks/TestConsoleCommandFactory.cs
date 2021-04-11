@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityDevConsole.Models.Command;
 
-namespace UnityDeveloperConsole.Tests.Command.Factory
+namespace UnityDevConsole.Tests.Command.Factory
 {
     public class TestConsoleCommandFactory : IConsoleCommandFactory
     {

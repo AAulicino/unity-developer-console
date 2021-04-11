@@ -4,7 +4,7 @@ using NUnit.Framework;
 using UnityDevConsole.Models.Command;
 using UnityEngine;
 
-namespace UnityDeveloperConsole.Tests.Command
+namespace UnityDevConsole.Tests.Command
 {
     public class CommandModelTests : MonoBehaviour
     {

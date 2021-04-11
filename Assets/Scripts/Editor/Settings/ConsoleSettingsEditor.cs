@@ -4,24 +4,27 @@ using UnityEditor;
 using UnityEngine;
 using static UnityDevConsole.Settings.ConsoleSettings;
 
-public class ConsoleSettingsEditor : Editor
+namespace UnityDevConsoleEditor.Settings
 {
-    [MenuItem("Assets/Developer Console/Edit Settings")]
-    public static void Edit ()
+    public class ConsoleSettingsEditor : Editor
     {
-        ConsoleSettings settings = LoadInstance();
-
-        if (settings == null)
+        [MenuItem("Assets/Developer Console/Edit Settings")]
+        public static void Edit ()
         {
-            settings = CreateInstance<ConsoleSettings>();
-            string path = Path.Combine(Application.dataPath, SETTINGS_PATH);
+            ConsoleSettings settings = LoadInstance();
 
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
+            if (settings == null)
+            {
+                settings = CreateInstance<ConsoleSettings>();
+                string path = Path.Combine(Application.dataPath, SETTINGS_PATH);
 
-            string path2 = Path.Combine("Assets", SETTINGS_PATH, SETTINGS_NAME + ".asset");
-            AssetDatabase.CreateAsset(settings, path2);
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+
+                string path2 = Path.Combine("Assets", SETTINGS_PATH, SETTINGS_NAME + ".asset");
+                AssetDatabase.CreateAsset(settings, path2);
+            }
+            Selection.activeObject = settings;
         }
-        Selection.activeObject = settings;
     }
 }

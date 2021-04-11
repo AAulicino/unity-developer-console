@@ -3,7 +3,7 @@ using UnityDevConsole.Views;
 using UnityDevConsole.Views.Hint;
 using UnityEngine;
 
-namespace UnityDeveloperConsole.Tests.Settings
+namespace UnityDevConsole.Tests.Settings
 {
     public class TestConsoleSettings : IConsoleSettings
     {
