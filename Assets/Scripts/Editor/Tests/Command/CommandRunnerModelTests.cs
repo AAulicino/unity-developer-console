@@ -1,5 +1,3 @@
-using System;
-using System.Reflection;
 using NUnit.Framework;
 using UnityDevConsole.Models.Command;
 
@@ -9,21 +7,17 @@ namespace UnityDeveloperConsole.Tests.Command
     {
         CommandRunnerModel Model;
         TestCommandsCollectionModel commandsCollection;
-        TestTypeParserModel typeParser;
-
-        MethodInfo barMethodInfo;
+        TestCommandParser commandParser;
 
         [SetUp]
         public void Setup ()
         {
-            barMethodInfo = typeof(Foo).GetMethod("Bar");
-
             commandsCollection = new TestCommandsCollectionModel();
-            typeParser = new TestTypeParserModel();
+            commandParser = new TestCommandParser();
 
             Model = new CommandRunnerModel(
                 commandsCollection,
-                typeParser
+                commandParser
             );
         }
 
@@ -34,26 +28,50 @@ namespace UnityDeveloperConsole.Tests.Command
         }
 
         [Test]
-        public void ExecuteCommand_Correctly_Parses_Commands_And_Invoke_Command ()
+        public void ExecuteCommand_Invokes_Command ()
         {
-            TestCommandModel command = new TestCommandModel
-            {
-                Parameters = barMethodInfo.GetParameters()
-            };
+            TestCommandModel command = new TestCommandModel();
 
             object[] result = null;
             command.OnInvokeCalled += x => result = x;
             commandsCollection.Commands.Add("foo", command);
+
+            commandParser.ParseArgsReturnValue = new object[] { 3 };
+
+            Model.ExecuteCommand("foo", new [] { "3" });
+
+            Assert.AreEqual(3, result[0]);
+        }
+
+        [Test]
+        public void ExecuteCommand_From_String_Invokes_Command ()
+        {
+            TestCommandModel command = new TestCommandModel();
+
+            object[] result = null;
+            command.OnInvokeCalled += x => result = x;
+            commandsCollection.Commands.Add("foo", command);
+
+            commandParser.ParseCommandReturnValue = ("foo", new [] { "3" });
+            commandParser.ParseArgsReturnValue = new object[] { 3 };
+
             Model.ExecuteCommand("foo 3");
 
             Assert.AreEqual(3, result[0]);
         }
 
-        class Foo
+        [Test]
+        public void ExecuteCommand_Non_Existing_Returns_Error_Log ()
         {
-            public event Action<int> OnBarCalled;
+            TestCommandModel command = new TestCommandModel();
 
-            public void Bar (int a) => OnBarCalled?.Invoke(a);
+            bool called = false;
+            command.OnInvokeCalled += x => called = true;
+            commandsCollection.Commands.Add("foo", command);
+
+            Model.ExecuteCommand("bar", new[] { "3" });
+
+            Assert.IsFalse(called);
         }
     }
 }
