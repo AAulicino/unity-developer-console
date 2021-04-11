@@ -1,5 +1,4 @@
 using UnityDevConsole.Views.Hint;
-using UnityEngine;
 using UnityEngine.UI;
 
 namespace UnityDevConsole.Views

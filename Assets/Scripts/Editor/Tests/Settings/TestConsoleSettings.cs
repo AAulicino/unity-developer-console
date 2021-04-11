@@ -1,4 +1,6 @@
 using UnityDevConsole.Settings;
+using UnityDevConsole.Views;
+using UnityDevConsole.Views.Hint;
 using UnityEngine;
 
 namespace UnityDeveloperConsole.Tests.Settings
@@ -24,5 +26,9 @@ namespace UnityDeveloperConsole.Tests.Settings
         public KeyCode HintDown { get; set; }
 
         public bool AutoInitialize { get; set; }
+
+        public ConsoleUIView ConsoleSkinPrefab => throw new System.NotImplementedException();
+
+        public HintEntryUIView HintSkinPrefab => throw new System.NotImplementedException();
     }
 }

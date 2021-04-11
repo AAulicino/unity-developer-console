@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityDevConsole.Controllers.Input;
 using UnityDevConsole.Models.Console.Hint;
+using UnityDevConsole.Settings;
 using UnityDevConsole.Views;
 using UnityDevConsole.Views.Hint;
 
@@ -12,6 +13,7 @@ namespace UnityDevConsole.Controllers.Hint
         readonly IHintUIView view;
         readonly IConsoleHintEntryUIViewFactory entryFactory;
         readonly IConsoleInputDetectorModel input;
+        readonly IConsoleSettings settings;
         readonly List<IHintEntryUIView> hintEntries = new List<IHintEntryUIView>();
 
         public ConsoleHintUIController (
@@ -19,13 +21,15 @@ namespace UnityDevConsole.Controllers.Hint
             IHintUIView hintView,
             IConsoleUIView consoleView,
             IConsoleHintEntryUIViewFactory entryFactory,
-            IConsoleInputDetectorModel input
+            IConsoleInputDetectorModel input,
+            IConsoleSettings settings
         )
         {
             this.model = model;
             this.view = hintView;
             this.entryFactory = entryFactory;
             this.input = input;
+            this.settings = settings;
             model.OnEnableChange += HandleEnableChange;
             consoleView.InputField.onValueChanged.AddListener(HandleInputValueChanged);
 
@@ -51,8 +55,8 @@ namespace UnityDevConsole.Controllers.Hint
                 return;
             }
             model.Enable();
-            UpdateHints();
-            UpdateHighlight();
+            SyncHints();
+            SyncHighlight();
         }
 
         void HandleSubmit () => model.Submit();
@@ -61,21 +65,21 @@ namespace UnityDevConsole.Controllers.Hint
         void HandleMoveUp ()
         {
             model.MoveSelectionUp();
-            UpdateHighlight();
+            SyncHighlight();
         }
 
         void HandleMoveDown ()
         {
             model.MoveSelectionDown();
-            UpdateHighlight();
+            SyncHighlight();
         }
 
-        void UpdateHints ()
+        void SyncHints ()
         {
             int hintCount = model.ActiveHints.Count;
 
             while (hintCount > hintEntries.Count)
-                hintEntries.Add(entryFactory.Create(view.EntriesContainer));
+                hintEntries.Add(entryFactory.Create(settings, view.EntriesContainer));
 
             for (int i = 0; i < hintEntries.Count; i++)
             {
@@ -89,7 +93,7 @@ namespace UnityDevConsole.Controllers.Hint
             }
         }
 
-        void UpdateHighlight ()
+        void SyncHighlight ()
         {
             if (!model.HasSelection)
             {

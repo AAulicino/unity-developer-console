@@ -1,3 +1,5 @@
+using UnityDevConsole.Views;
+using UnityDevConsole.Views.Hint;
 using UnityEngine;
 
 namespace UnityDevConsole.Settings
@@ -6,6 +8,9 @@ namespace UnityDevConsole.Settings
     {
         public const string SETTINGS_PATH = "UnityDeveloperConsole/Resources";
         public const string SETTINGS_NAME = "ConsoleSettings";
+
+        const string DEFAULT_SKIN_PATH = "DevConsole/DC_ConsoleUI";
+        const string DEFAULT_HINT_PATH = "DevConsole/DC_HintEntry";
 
         static ConsoleSettings _instance;
         public static ConsoleSettings Instance
@@ -21,13 +26,20 @@ namespace UnityDevConsole.Settings
         [SerializeField] bool autoInitialize = true;
         [SerializeField] int historySize = 10;
         [SerializeField] int maxHints = 10;
-        [SerializeField] string[] assemblies = new[] { "Assembly-CSharp" };
+
+        [Header("Input")]
         [SerializeField] KeyCode toggleConsole = KeyCode.BackQuote;
         [SerializeField] KeyCode closeHint = KeyCode.Escape;
         [SerializeField] KeyCode submit = KeyCode.Return;
         [SerializeField] KeyCode submit2 = KeyCode.KeypadEnter;
         [SerializeField] KeyCode hintUp = KeyCode.UpArrow;
         [SerializeField] KeyCode hintDown = KeyCode.DownArrow;
+
+        [Header("Skin")]
+        [SerializeField] ConsoleUIView consoleSkinPrefab;
+        [SerializeField] HintEntryUIView hintSkinPrefab;
+
+        [SerializeField] string[] assemblies = new[] { "Assembly-CSharp" };
 
         public bool AutoInitialize => autoInitialize;
         public int HistorySize => historySize;
@@ -41,7 +53,16 @@ namespace UnityDevConsole.Settings
         public KeyCode HintUp => hintUp;
         public KeyCode HintDown => hintDown;
 
+        public ConsoleUIView ConsoleSkinPrefab => ConsoleSkinPrefab;
+        public HintEntryUIView HintSkinPrefab => HintSkinPrefab;
+
         public static ConsoleSettings LoadInstance ()
             => Resources.Load<ConsoleSettings>(SETTINGS_NAME);
+
+        public void Reset ()
+        {
+            consoleSkinPrefab = Resources.Load<ConsoleUIView>(DEFAULT_SKIN_PATH);
+            hintSkinPrefab = Resources.Load<HintEntryUIView>(DEFAULT_HINT_PATH);
+        }
     }
 }

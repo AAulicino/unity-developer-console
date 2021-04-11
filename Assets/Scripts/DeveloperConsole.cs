@@ -36,7 +36,7 @@ public static class DeveloperConsole
             settings
         );
 
-        ConsoleUIView view = ConsoleUIViewFactory.Create();
+        ConsoleUIView view = ConsoleUIViewFactory.Create(settings);
         IConsoleInputDetectorModel inputDetector = ConsoleInputDetectorModelFactory.Create(
             view,
             model,
@@ -48,7 +48,8 @@ public static class DeveloperConsole
             hintModel,
             view.HintUI,
             view,
-            inputDetector
+            inputDetector,
+            settings
         );
         Task.Run(commandsCollection.Initialize);
         inputDetector.Initialize();

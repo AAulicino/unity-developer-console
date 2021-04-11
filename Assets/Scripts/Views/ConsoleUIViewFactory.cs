@@ -1,12 +1,13 @@
+using UnityDevConsole.Settings;
 using UnityEngine;
 
 namespace UnityDevConsole.Views
 {
     public static class ConsoleUIViewFactory
     {
-        public static ConsoleUIView Create ()
+        public static ConsoleUIView Create (IConsoleSettings settings)
         {
-            return Object.Instantiate(Resources.Load<ConsoleUIView>("DevConsole/DC_ConsoleUI"));
+            return Object.Instantiate(settings.ConsoleSkinPrefab);
         }
     }
 }

@@ -1,3 +1,5 @@
+using UnityDevConsole.Views;
+using UnityDevConsole.Views.Hint;
 using UnityEngine;
 
 namespace UnityDevConsole.Settings
@@ -15,5 +17,8 @@ namespace UnityDevConsole.Settings
         KeyCode HintUp { get; }
         KeyCode HintDown { get; }
         bool AutoInitialize { get; }
+
+        ConsoleUIView ConsoleSkinPrefab { get; }
+        HintEntryUIView HintSkinPrefab { get; }
     }
 }
