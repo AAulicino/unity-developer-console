@@ -1,5 +1,5 @@
 {
-    "name": "UnityDeveloperConsole",
+    "name": "UnityDevConsole",
     "rootNamespace": "UnityDevConsole",
     "references": [],
     "includePlatforms": [],

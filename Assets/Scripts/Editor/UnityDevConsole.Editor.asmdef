@@ -1,6 +1,6 @@
 {
-    "name": "UnityDeveloperConsoleEditor",
-    "rootNamespace": "UnityDeveloperConsoleEditor",
+    "name": "UnityDevConsoleEditor",
+    "rootNamespace": "UnityDevConsoleEditor",
     "references": [
         "GUID:7ec42cd903991e849a2725bdca0e0f3f"
     ],
