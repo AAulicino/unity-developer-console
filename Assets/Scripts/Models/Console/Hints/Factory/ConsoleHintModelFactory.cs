@@ -7,7 +7,7 @@ namespace UnityDevConsole.Models.Console.Hint
     {
         public static IConsoleHintModel Create (
             IConsoleInputHistoryModel history,
-            ICommandsCollection commandsCollection,
+            ICommandsCollectionModel commandsCollection,
             IConsoleSettings settings
         )
         {

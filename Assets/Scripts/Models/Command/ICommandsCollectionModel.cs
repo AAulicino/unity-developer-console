@@ -2,9 +2,9 @@ using System.Collections.Generic;
 
 namespace UnityDevConsole.Models.Command
 {
-    public interface ICommandsCollection
+    public interface ICommandsCollectionModel
     {
-        IReadOnlyDictionary<string, ICommand> Commands { get; }
+        IReadOnlyDictionary<string, ICommandModel> Commands { get; }
 
         void Initialize ();
 

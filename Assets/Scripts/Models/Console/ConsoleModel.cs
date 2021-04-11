@@ -9,7 +9,7 @@ namespace UnityDevConsole.Models.Console
         public event Action<bool> OnEnableChange;
         public event Action<string> OnOutputUpdate;
 
-        readonly ICommandsCollection commandsCollection;
+        readonly ICommandsCollectionModel commandsCollection;
         readonly ICommandRunnerModel commandRunner;
         readonly IConsoleOutputModel output;
         readonly IConsoleInputHistoryModel inputHistory;
@@ -28,7 +28,7 @@ namespace UnityDevConsole.Models.Console
         public IReadOnlyList<string> InputHistory => inputHistory.InputHistory;
 
         public ConsoleModel (
-            ICommandsCollection commandsCollection,
+            ICommandsCollectionModel commandsCollection,
             ICommandRunnerModel commandRunner,
             IConsoleOutputModel output,
             IConsoleInputHistoryModel inputHistory

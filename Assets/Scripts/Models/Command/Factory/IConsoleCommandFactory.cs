@@ -4,7 +4,7 @@ namespace UnityDevConsole.Models.Command
 {
     public interface IConsoleCommandFactory
     {
-        ICommand Create (
+        ICommandModel Create (
             string commandName,
             string methodName,
             object context,
@@ -12,6 +12,6 @@ namespace UnityDevConsole.Models.Command
             bool hidden
         );
 
-        Dictionary<string, ICommand> CreateFromAssemblies (string[] assemblies);
+        Dictionary<string, ICommandModel> CreateFromAssemblies (string[] assemblies);
     }
 }

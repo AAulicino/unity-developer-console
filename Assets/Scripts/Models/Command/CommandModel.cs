@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace UnityDevConsole.Models.Command
 {
-    public class Command : ICommand
+    public class CommandModel : ICommandModel
     {
         readonly MethodInfo method;
         readonly object context;
@@ -15,13 +15,13 @@ namespace UnityDevConsole.Models.Command
         public bool Hidden { get; }
         public bool DeveloperOnly { get; }
 
-        public Command (ConsoleCommandAttribute attribute, MethodInfo method)
+        public CommandModel (ConsoleCommandAttribute attribute, MethodInfo method)
             : this(attribute.CommandName, method, attribute.DeveloperOnly, attribute.Hidden)
         {
 
         }
 
-        public Command (
+        public CommandModel (
             string commandName,
             MethodInfo method,
             object context,
@@ -33,7 +33,7 @@ namespace UnityDevConsole.Models.Command
             this.context = context;
         }
 
-        Command (string commandName, MethodInfo method, bool developerOnly, bool hidden)
+        CommandModel (string commandName, MethodInfo method, bool developerOnly, bool hidden)
         {
             Name = commandName;
             this.method = method;
@@ -45,7 +45,7 @@ namespace UnityDevConsole.Models.Command
             FullName = $"{commandName} <color=#ff8575>{parameters}</color>";
         }
 
-        public int CompareTo (Command other) => Name.CompareTo(other);
+        public int CompareTo (CommandModel other) => Name.CompareTo(other);
 
         public object Invoke (object[] parameters) => method.Invoke(context, parameters);
     }

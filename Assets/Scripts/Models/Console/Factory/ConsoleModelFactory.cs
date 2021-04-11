@@ -6,7 +6,7 @@ public static class ConsoleModelFactory
 {
     public static ConsoleModel Create (
         IConsoleInputHistoryModel historyModel,
-        ICommandsCollection commandsCollection
+        ICommandsCollectionModel commandsCollection
     )
     {
         return new ConsoleModel(

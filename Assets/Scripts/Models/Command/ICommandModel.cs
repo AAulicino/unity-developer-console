@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace UnityDevConsole.Models.Command
 {
-    public interface ICommand : IComparable<Command>
+    public interface ICommandModel : IComparable<CommandModel>
     {
         string Name { get; }
         string FullName { get; }

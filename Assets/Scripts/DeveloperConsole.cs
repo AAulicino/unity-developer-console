@@ -27,7 +27,7 @@ public static class DeveloperConsole
 
         IConsoleSettings settings = ConsoleSettings.Instance;
         IConsoleInputHistoryModel historyModel = ConsoleInputHistoryModelFactory.Create(settings);
-        ICommandsCollection commandsCollection = CommandsCollectionFactory.Create(settings);
+        ICommandsCollectionModel commandsCollection = CommandsCollectionFactory.Create(settings);
         model = ConsoleModelFactory.Create(historyModel, commandsCollection);
 
         IConsoleHintModel hintModel = ConsoleHintModelFactory.Create(
@@ -48,7 +48,6 @@ public static class DeveloperConsole
             hintModel,
             view.HintUI,
             view,
-            new ConsoleHintEntryUIViewFactory(),
             inputDetector
         );
         commandsCollection.Initialize();

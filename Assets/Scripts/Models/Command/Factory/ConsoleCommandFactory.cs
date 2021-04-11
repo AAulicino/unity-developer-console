@@ -9,9 +9,9 @@ namespace UnityDevConsole.Models.Command
     {
         const BindingFlags flags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
 
-        public Dictionary<string, ICommand> CreateFromAssemblies (params string[] assemblies)
+        public Dictionary<string, ICommandModel> CreateFromAssemblies (params string[] assemblies)
         {
-            Dictionary<string, ICommand> commands = new Dictionary<string, ICommand>();
+            Dictionary<string, ICommandModel> commands = new Dictionary<string, ICommandModel>();
 
             IEnumerable<MethodInfo> methods = assemblies.AsParallel()
                 .Select(Assembly.Load)
@@ -37,13 +37,13 @@ namespace UnityDevConsole.Models.Command
                         );
                     }
                     else
-                        commands.Add(consoleAttr.CommandName, new Command(consoleAttr, method));
+                        commands.Add(consoleAttr.CommandName, new CommandModel(consoleAttr, method));
                 }
             }
             return commands;
         }
 
-        public ICommand Create (
+        public ICommandModel Create (
             string commandName,
             string methodName,
             object context,
@@ -52,7 +52,7 @@ namespace UnityDevConsole.Models.Command
         )
         {
             MethodInfo methodInfo = context.GetType().GetMethod(methodName, flags);
-            return new Command(commandName, methodInfo, context, developerOnly, hidden);
+            return new CommandModel(commandName, methodInfo, context, developerOnly, hidden);
         }
     }
 }

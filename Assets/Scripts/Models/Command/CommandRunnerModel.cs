@@ -8,11 +8,11 @@ namespace UnityDevConsole.Models.Command
 {
     public class CommandRunnerModel : ICommandRunnerModel
     {
-        readonly ICommandsCollection commandsCollection;
+        readonly ICommandsCollectionModel commandsCollection;
         readonly ITypeParserModel typeParser;
 
         public CommandRunnerModel (
-            ICommandsCollection commandsCollection,
+            ICommandsCollectionModel commandsCollection,
             ITypeParserModel typeParser
         )
         {
@@ -31,7 +31,7 @@ namespace UnityDevConsole.Models.Command
 
         public object ExecuteCommand (string commandName, string[] args)
         {
-            if (!commandsCollection.Commands.TryGetValue(commandName, out ICommand command))
+            if (!commandsCollection.Commands.TryGetValue(commandName, out ICommandModel command))
                 return "Unknown command. " + commandName;
 
             try
@@ -49,7 +49,7 @@ namespace UnityDevConsole.Models.Command
             }
         }
 
-        object[] ParseArgs (ICommand command, string[] args)
+        object[] ParseArgs (ICommandModel command, string[] args)
         {
             object[] parsedArgs = new object[command.Parameters.Length];
 

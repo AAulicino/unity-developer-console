@@ -6,17 +6,22 @@ using UnityEngine;
 
 namespace UnityDevConsole.Models.Command
 {
-    public class CommandsCollection : ICommandsCollection
+    public class CommandsCollectionModel : ICommandsCollectionModel
     {
         readonly object _lock = new object();
 
-        readonly Dictionary<string, ICommand> registeredCommands = new Dictionary<string, ICommand>();
+        readonly Dictionary<string, ICommandModel> registeredCommands
+            = new Dictionary<string, ICommandModel>();
+
         readonly IConsoleSettings settings;
         readonly IConsoleCommandFactory commandFactory;
 
-        public IReadOnlyDictionary<string, ICommand> Commands => registeredCommands;
+        public IReadOnlyDictionary<string, ICommandModel> Commands => registeredCommands;
 
-        public CommandsCollection (IConsoleSettings settings, IConsoleCommandFactory commandFactory)
+        public CommandsCollectionModel (
+            IConsoleSettings settings,
+            IConsoleCommandFactory commandFactory
+        )
         {
             this.settings = settings;
             this.commandFactory = commandFactory;
@@ -28,12 +33,12 @@ namespace UnityDevConsole.Models.Command
             {
                 try
                 {
-                    Dictionary<string, ICommand> commands = commandFactory
+                    Dictionary<string, ICommandModel> commands = commandFactory
                         .CreateFromAssemblies(settings.Assemblies);
 
                     lock (_lock)
                     {
-                        foreach (KeyValuePair<string, ICommand> command in commands)
+                        foreach (KeyValuePair<string, ICommandModel> command in commands)
                             registeredCommands.Add(command.Key, command.Value);
                     }
                 }
@@ -52,7 +57,7 @@ namespace UnityDevConsole.Models.Command
             bool hidden
         )
         {
-            ICommand command = commandFactory.Create(
+            ICommandModel command = commandFactory.Create(
                 commandName,
                 methodName,
                 context,

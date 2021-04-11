@@ -13,7 +13,7 @@ namespace UnityDevConsole.Models.Console.Hint
         public event Action<bool> OnEnableChange;
         public event Action<string> OnHintSelected;
 
-        readonly ICommandsCollection commandCollection;
+        readonly ICommandsCollectionModel commandCollection;
         readonly IConsoleInputHistoryModel history;
         readonly IConsoleSettings settings;
         bool _enabled;
@@ -37,7 +37,7 @@ namespace UnityDevConsole.Models.Console.Hint
         public bool HasSelection => SelectedIndex != NO_SELECTION;
 
         public ConsoleHintModel (
-            ICommandsCollection commands,
+            ICommandsCollectionModel commands,
             IConsoleInputHistoryModel history,
             IConsoleSettings settings
         )
@@ -103,7 +103,7 @@ namespace UnityDevConsole.Models.Console.Hint
             if (string.IsNullOrEmpty(input))
                 return;
 
-            foreach (ICommand command in commandCollection.Commands.Values)
+            foreach (ICommandModel command in commandCollection.Commands.Values)
             {
                 if (activeHints.Count >= settings.MaxHints)
                     break;

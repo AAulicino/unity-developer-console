@@ -2,6 +2,7 @@ using UnityDevConsole.Controllers.Input;
 using UnityDevConsole.Models.Console.Hint;
 using UnityDevConsole.Views;
 using UnityDevConsole.Views.Hint;
+using UnityDeveloperConsole.Views.Hint;
 
 namespace UnityDevConsole.Controllers.Hint.Factory
 {
@@ -11,11 +12,16 @@ namespace UnityDevConsole.Controllers.Hint.Factory
             IConsoleHintModel model,
             IHintUIView hintView,
             IConsoleUIView consoleView,
-            IConsoleHintEntryUIViewFactory entryFactory,
             IConsoleInputDetectorModel input
         )
         {
-            return new ConsoleHintUIController(model, hintView, consoleView, entryFactory, input);
+            return new ConsoleHintUIController(
+                model,
+                hintView,
+                consoleView,
+                new ConsoleHintEntryUIViewFactory(),
+                input
+            );
         }
     }
 }
