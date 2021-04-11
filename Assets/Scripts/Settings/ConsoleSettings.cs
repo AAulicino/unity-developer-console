@@ -53,8 +53,8 @@ namespace UnityDevConsole.Settings
         public KeyCode HintUp => hintUp;
         public KeyCode HintDown => hintDown;
 
-        public ConsoleUIView ConsoleSkinPrefab => ConsoleSkinPrefab;
-        public HintEntryUIView HintSkinPrefab => HintSkinPrefab;
+        public ConsoleUIView ConsoleSkinPrefab => consoleSkinPrefab;
+        public HintEntryUIView HintSkinPrefab => hintSkinPrefab;
 
         public static ConsoleSettings LoadInstance ()
             => Resources.Load<ConsoleSettings>(SETTINGS_NAME);

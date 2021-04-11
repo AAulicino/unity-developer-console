@@ -15,11 +15,15 @@ MonoBehaviour:
   autoInitialize: 1
   historySize: 10
   maxHints: 10
-  assemblies:
-  - Assembly-CSharp
   toggleConsole: 96
   closeHint: 27
   submit: 13
   submit2: 271
   hintUp: 273
   hintDown: 274
+  consoleSkinPrefab: {fileID: 114824013814343934, guid: 3c56a4a8dc690724791156c3e2090d6f,
+    type: 3}
+  hintSkinPrefab: {fileID: 5133725727341521429, guid: 51727b8f7e8551142a12b35db1991be2,
+    type: 3}
+  assemblies:
+  - Assembly-CSharp
