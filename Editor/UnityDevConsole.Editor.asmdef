@@ -1,0 +1,18 @@
+{
+    "name": "UnityDevConsoleEditor",
+    "rootNamespace": "UnityDevConsoleEditor",
+    "references": [
+        "GUID:2e349bac4a8c64ada9bed004543edf0b"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
