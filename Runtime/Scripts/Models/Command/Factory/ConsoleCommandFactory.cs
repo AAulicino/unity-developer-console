@@ -20,15 +20,13 @@ namespace UnityDevConsole.Models.Command
 
             foreach (MethodInfo method in methods)
             {
-                object[] taggedMethods = method.GetCustomAttributes(
+                object[] attributes = method.GetCustomAttributes(
                     typeof(ConsoleCommandAttribute),
                     false
                 );
 
-                foreach (object consoleCommand in taggedMethods)
+                foreach (ConsoleCommandAttribute consoleAttr in attributes)
                 {
-                    ConsoleCommandAttribute consoleAttr = (ConsoleCommandAttribute)consoleCommand;
-
                     if (commands.ContainsKey(consoleAttr.CommandName))
                     {
                         Debug.LogWarning(

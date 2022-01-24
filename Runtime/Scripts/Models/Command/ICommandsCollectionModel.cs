@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace UnityDevConsole.Models.Command
 {
@@ -7,9 +6,9 @@ namespace UnityDevConsole.Models.Command
     {
         IReadOnlyDictionary<string, ICommandModel> Commands { get; }
 
-        void Initialize ();
+        void Initialize();
 
-        bool RegisterRuntimeCommand (
+        bool RegisterRuntimeCommand(
             string commandName,
             string methodName,
             object context,
@@ -17,6 +16,6 @@ namespace UnityDevConsole.Models.Command
             bool hidden
         );
 
-        void UnregisterRuntimeCommand (string commandName);
+        void UnregisterRuntimeCommand(string commandName);
     }
 }
