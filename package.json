@@ -1,0 +1,21 @@
+{
+  "name": "com.arthuraulicino.unity-developer-console",
+  "displayName": "Unity Developer Console",
+  "version": "0.1.0",
+  "unity": "2020.3",
+  "description": "",
+  "keywords": [
+    "console"
+  ],
+  "category": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AAulicino/unity-developer-console.git"
+  },
+  "author": "Arthur Aulicino",
+  "dependencies": {
+    "com.unity.test-framework": "1.1.30"
+  },
+  "documentationUrl": "",
+  "changelogUrl": ""
+}

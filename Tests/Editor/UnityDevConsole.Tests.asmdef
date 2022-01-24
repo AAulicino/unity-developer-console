@@ -1,0 +1,19 @@
+{
+    "name": "UnityDevConsoleTests",
+    "rootNamespace": "UnityDevConsole.Tests",
+    "references": [
+        "GUID:2e349bac4a8c64ada9bed004543edf0b",
+        "GUID:37eaaaae7101a4b49a9c3970a3e151eb"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
